@@ -13,14 +13,6 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
-subprojects {
-    afterEvaluate { project ->
-        if (project.name == "printing") {
-            println "PRINTING compileSdk: ${project.android.compileSdkVersion}"
-        }
-    }
-}
-
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
