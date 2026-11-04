@@ -87,7 +87,7 @@ class PgnParser {
     }
 
     final chunks = _splitIntoGames(cleaned);
-    var topError = chunks.length > maxGamesPerImport ? 'E-IMP-07' : null;
+    final topError = chunks.length > maxGamesPerImport ? 'E-IMP-07' : null;
     final limitedChunks = chunks.take(maxGamesPerImport).toList();
 
     final parsedGames = <ParsedPgnGame>[];

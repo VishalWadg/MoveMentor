@@ -7,7 +7,6 @@ import '../adapters/sources/game_sources_adapter.dart';
 import '../adapters/storage/sqlite_storage_adapter.dart';
 import '../domain/chess/chess_models.dart';
 import '../domain/chess/pgn_parser.dart';
-import '../ports/ports.dart';
 import 'analysis_pipeline_service.dart';
 import 'export_service.dart';
 

@@ -49,8 +49,8 @@ enum MoveClassification {
   final bool isPositive;
 
   const MoveClassification(
-    this.label, {
-    required int this.precedence,
+    this.label,
+    this.precedence, {
     required this.isPositive,
   });
 

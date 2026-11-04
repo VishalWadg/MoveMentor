@@ -10,8 +10,6 @@ import '../../application/copy_deck.dart';
 import '../../domain/chess/chess_models.dart';
 import '../../domain/chess/pgn_parser.dart';
 import '../../domain/coach/coach_contracts.dart';
-import '../../domain/coach/prompt_library.dart';
-import '../../ports/ports.dart';
 import '../widgets/chess_board_widget.dart';
 
 /// Main App Shell managing Onboarding (Screen 1) and Main Navigation across Screens 2..16.
@@ -1820,12 +1818,8 @@ class LicencesAndPrivacyScreen extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           const Text(
-            'What this app stores: Games you import, the analysis the app computes, explanations, your settings and any model files. All of it is stored only on your device. API keys are kept in your device secure storage.
-
-'
-            'What leaves your device, and only when you ask: (1) Importing by username sends that username to Lichess or Chess.com to fetch your public games. (2) Downloading a model contacts the download host. (3) If you choose "My own API", the position and move facts for each explained moment are sent to the endpoint you configured. Player names and full game files are not sent. If you turn on Offline only, none of these happen.
-
-'
+            'What this app stores: Games you import, the analysis the app computes, explanations, your settings and any model files. All of it is stored only on your device. API keys are kept in your device secure storage.\n\n'
+            'What leaves your device, and only when you ask: (1) Importing by username sends that username to Lichess or Chess.com to fetch your public games. (2) Downloading a model contacts the download host. (3) If you choose "My own API", the position and move facts for each explained moment are sent to the endpoint you configured. Player names and full game files are not sent. If you turn on Offline only, none of these happen.\n\n'
             'What we do not do: We run no accounts and no servers that hold your data. We do not use analytics, advertising or tracking.',
           ),
           const Divider(height: 24),

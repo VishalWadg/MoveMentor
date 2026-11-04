@@ -13,7 +13,7 @@ void main() {
 [Black "Bob"]
 [Result "1-0"]
 
-1. e4 { [%clk 0:09:58] } e5 (1... c5 2. Nf3) 2. Nf3 $1 Nc6 0-0 1-0
+1. e4 { [%clk 0:09:58] } e5 (1... c5 2. Nf3) 2. Nf3 \$1 Nc6 0-0 1-0
 
 [Event "Chess960 Game"]
 [Variant "Chess960"]

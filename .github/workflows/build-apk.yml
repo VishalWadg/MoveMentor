@@ -36,10 +36,6 @@ jobs:
       - name: Verify Flutter & Dart versions
         run: flutter --version
 
-      - name: Ensure Android platform files are generated
-        run: |
-          flutter create --platforms=android --project-name=movementor --org=com.movementor .
-
       - name: Install dependencies
         run: flutter pub get
 

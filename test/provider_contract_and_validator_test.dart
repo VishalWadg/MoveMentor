@@ -13,7 +13,7 @@ void main() {
     ratingBand: RatingBand.novice,
     userColor: SideColor.w,
     ply: 23,
-    fen: '1rbqkbnr/p1pp1ppp/2n5/4p3/4P3/1Q3N2/PPPP1PPP/RNB1KB1R w KQkq - 1 5',
+    fen: '1rbqkbnr/pppp1ppp/2n5/4p3/4P3/1Q3N2/PPPP1PPP/RNB1KB1R w KQkq - 1 5',
     moveSan: 'Qxb7',
     classification: MoveClassification.blunder,
     winBefore: 62.0,
@@ -137,7 +137,7 @@ void main() {
       }
     });
 
-    test('Part 22.3 & 30.4: GBNF Grammar Builder and Offline-only Gateway Block (T-NET-02)', () {
+    test('Part 22.3 & 30.4: GBNF Grammar Builder and Offline-only Gateway Block (T-NET-02)', () async {
       final grammar = GbnfGrammarBuilder.buildForRequest(sampleReq);
       expect(grammar.contains('"Qxb7"'), isTrue);
       expect(grammar.contains('"Blunder"'), isTrue);
@@ -154,8 +154,8 @@ void main() {
         secureStore: SecureStoreAdapter(useMemoryOnly: true),
       );
 
-      expect(
-        () => remote.explain(sampleReq).toList(),
+      await expectLater(
+        remote.explain(sampleReq).toList(),
         throwsA(isA<StateError>()),
       );
       expect(gateway.auditLogs.single.blockedByOfflineOnly, isTrue);

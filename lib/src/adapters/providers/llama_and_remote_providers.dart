@@ -6,6 +6,7 @@ import '../../domain/coach/gbnf_grammar.dart';
 import '../../domain/coach/prompt_library.dart';
 import '../../domain/coach/response_validator.dart';
 import '../../ports/ports.dart';
+import '../storage/sqlite_storage_adapter.dart';
 import 'template_coach_provider.dart';
 
 enum RamFitVerdict {
@@ -332,10 +333,6 @@ class RemoteApiProvider implements ExplanationProvider {
     CoachRequest req, {
     CancelToken? cancel,
   }) async* {
-    if (gateway.isOfflineOnly || !gateway.isDeviceOnline) {
-      throw StateError('E-AI-07');
-    }
-
     final apiKey = await secureStore.readSecret(secretRef) ?? '';
     final endpointUri = _resolveEndpointUri();
     final headers = <String, String>{

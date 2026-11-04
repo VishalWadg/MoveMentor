@@ -48,10 +48,6 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Ensure Android platform scaffolding is complete
-        run: |
-          flutter create --platforms=android --project-name=movementor --org=com.movementor .
-
       - name: Install dependencies
         run: flutter pub get
 

@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide CancelToken;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../domain/coach/coach_contracts.dart';
 import '../../ports/ports.dart';
