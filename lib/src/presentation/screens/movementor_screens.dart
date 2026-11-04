@@ -10,6 +10,7 @@ import '../../application/copy_deck.dart';
 import '../../domain/chess/chess_models.dart';
 import '../../domain/chess/pgn_parser.dart';
 import '../../domain/coach/coach_contracts.dart';
+import '../../ports/ports.dart';
 import '../widgets/chess_board_widget.dart';
 
 /// Main App Shell managing Onboarding (Screen 1) and Main Navigation across Screens 2..16.
@@ -459,6 +460,7 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
   final TextEditingController _usernameController = TextEditingController();
   String _statusMessage = '';
   List<ParsedPgnGame> _previewGames = [];
+  bool _isFetching = false;
 
   @override
   void dispose() {
@@ -479,6 +481,10 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Chip(
+              avatar: Icon(
+                isOffline ? Icons.cloud_off : Icons.cloud_done,
+                size: 16,
+              ),
               label: Text(isOffline ? 'Offline mode' : 'Online'),
             ),
           ),
@@ -488,21 +494,91 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
         padding: const EdgeInsets.all(16),
         children: [
           if (isOffline)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12.0),
-              child: Text(
-                'Needs internet. Queue for later?',
-                style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+            Card(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              margin: const EdgeInsets.only(bottom: 16),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    const Icon(Icons.cloud_off, color: Colors.amber),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Offline-Only Mode is Active',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Network requests are blocked for privacy. To fetch directly from Lichess or Chess.com, tap Go Online.',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    FilledButton.tonal(
+                      onPressed: () {
+                        ref.read(appUiProvider.notifier).setOfflineOnly(false);
+                      },
+                      child: const Text('Go Online'),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          else
+            Card(
+              color: Colors.green.withValues(alpha: 0.08),
+              margin: const EdgeInsets.only(bottom: 16),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    const Icon(Icons.cloud_done, color: Colors.green),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Online Mode Active',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Ready to import your games from Lichess or Chess.com.',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    OutlinedButton(
+                      onPressed: () {
+                        ref.read(appUiProvider.notifier).setOfflineOnly(true);
+                      },
+                      child: const Text('Go Offline'),
+                    ),
+                  ],
+                ),
               ),
             ),
+          if (_isFetching) ...[
+            const LinearProgressIndicator(),
+            const SizedBox(height: 12),
+          ],
           Row(
             children: [
               Expanded(
                 child: _buildHubTile(
                   title: 'Lichess',
                   subtitle: isOffline
-                      ? 'Needs internet. Queue for later?'
-                      : 'by username (needs online)',
+                      ? 'Offline: Queue or tap Go Online'
+                      : 'Fetch by username directly',
                   dimmed: isOffline,
                   onTap: () => _showOnlineImportSheet('lichess', isOffline),
                 ),
@@ -512,8 +588,8 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
                 child: _buildHubTile(
                   title: 'Chess.com',
                   subtitle: isOffline
-                      ? 'Needs internet. Queue for later?'
-                      : 'by username (needs online)',
+                      ? 'Offline: Queue or tap Go Online'
+                      : 'Fetch by username directly',
                   dimmed: isOffline,
                   onTap: () => _showOnlineImportSheet('chesscom', isOffline),
                 ),
@@ -551,12 +627,34 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
           ),
           if (_statusMessage.isNotEmpty) ...[
             const SizedBox(height: 16),
-            Text(_statusMessage, style: const TextStyle(fontWeight: FontWeight.w600)),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    _isFetching ? Icons.sync : Icons.info_outline,
+                    size: 18,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _statusMessage,
+                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
           if (_previewGames.isNotEmpty) ...[
             const SizedBox(height: 16),
             Text(
-              'Import Preview (${_previewGames.length} games found)',
+              'Import Preview (${_previewGames.length} games ready)',
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
@@ -573,7 +671,7 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
             FilledButton.icon(
               onPressed: _commitPreviewImport,
               icon: const Icon(Icons.check),
-              label: const Text('Save Selected Games to Library'),
+              label: Text('Save ${_previewGames.length} Game(s) to Library'),
             ),
           ],
         ],
@@ -687,25 +785,107 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
     );
   }
 
+  Future<void> _fetchOnlineGames(String platform, String username) async {
+    setState(() {
+      _isFetching = true;
+      _statusMessage =
+          'Connecting to ${platform == "lichess" ? "Lichess" : "Chess.com"} for "$username"...';
+      _previewGames = [];
+    });
+
+    final services = ref.read(appServicesProvider);
+    final GameSource source =
+        platform == 'lichess' ? services.lichessSource : services.chessComSource;
+
+    try {
+      final stream = source.fetchGames(
+        ImportRequestParams(
+          source: platform,
+          username: username,
+          maxGames: 20,
+        ),
+      );
+
+      await for (final update in stream) {
+        if (!mounted) return;
+        setState(() {
+          if (update.status == 'failed') {
+            _statusMessage =
+                update.message ?? 'Import failed (${update.errorCode ?? "unknown"}).';
+          } else if (update.status == 'paused_rate_limit') {
+            _statusMessage =
+                update.message ?? 'Rate limited. Pausing temporarily...';
+          } else if (update.status == 'done') {
+            _previewGames = update.previewGames;
+            _statusMessage = update.previewGames.isEmpty
+                ? 'No games found for "$username".'
+                : 'Found ${update.previewGames.length} game(s). Review preview below and tap Save.';
+          } else {
+            if (update.previewGames.isNotEmpty) {
+              _previewGames = update.previewGames;
+            }
+            _statusMessage =
+                update.message ?? 'Fetching games (${update.fetchedCount} found)...';
+          }
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _statusMessage = 'Fetch error: $e';
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isFetching = false;
+        });
+      }
+    }
+  }
+
   Future<void> _showOnlineImportSheet(String platform, bool isOffline) async {
     final services = ref.read(appServicesProvider);
+    final platformName = platform == 'lichess' ? 'Lichess' : 'Chess.com';
+
     await showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Import from ${platform == "lichess" ? "Lichess" : "Chess.com"}'),
+        title: Text('Import from $platformName'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
               controller: _usernameController,
-              decoration: const InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: '$platformName Username',
+                hintText: 'e.g. magnuscarlsen',
+                border: const OutlineInputBorder(),
               ),
             ),
             if (isOffline) ...[
-              const SizedBox(height: 8),
-              Text(CopyDeck.tr('import.queue')),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.amber.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.amber.shade700),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.wifi_off, color: Colors.amber.shade900, size: 20),
+                    const SizedBox(width: 8),
+                    const Expanded(
+                      child: Text(
+                        'Offline-only mode is active. You can switch to online mode to fetch immediately, or queue for later.',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ],
         ),
@@ -714,12 +894,12 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
             onPressed: () => Navigator.of(ctx).pop(),
             child: const Text('Cancel'),
           ),
-          FilledButton(
-            onPressed: () {
-              final username = _usernameController.text.trim();
-              if (username.isNotEmpty) {
-                services.storage.saveHandle(platform, username);
-                if (isOffline) {
+          if (isOffline)
+            TextButton(
+              onPressed: () {
+                final username = _usernameController.text.trim();
+                if (username.isNotEmpty) {
+                  services.storage.saveHandle(platform, username);
                   services.storage.saveImportJob({
                     'id': '${platform}_$username',
                     'kind': platform,
@@ -730,13 +910,29 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
                   });
                   setState(() {
                     _statusMessage =
-                        'Queued $platform import for "$username" — will run when back online with Offline-only off.';
+                        'Queued $platformName import for "$username" (will fetch when online).';
                   });
                 }
+                Navigator.of(ctx).pop();
+              },
+              child: const Text('Queue for later'),
+            ),
+          FilledButton.icon(
+            icon: Icon(isOffline ? Icons.cloud_outlined : Icons.download),
+            onPressed: () {
+              final username = _usernameController.text.trim();
+              if (username.isEmpty) return;
+
+              services.storage.saveHandle(platform, username);
+
+              if (isOffline) {
+                ref.read(appUiProvider.notifier).setOfflineOnly(false);
               }
+
               Navigator.of(ctx).pop();
+              _fetchOnlineGames(platform, username);
             },
-            child: Text(isOffline ? 'Queue for later' : 'Fetch games'),
+            label: Text(isOffline ? 'Go Online & Fetch' : 'Fetch games'),
           ),
         ],
       ),
@@ -1266,6 +1462,39 @@ class SettingsHubScreen extends ConsumerWidget {
           'AI Coach & Engine Settings',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
+        Card(
+          color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.35),
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.offline_bolt, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Built-in Offline AI Coach (0 MB)',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'MoveMentor includes a built-in Template Coach powered by Stockfish. It runs 100% offline out-of-the-box with NO downloads required. Local GGUF models and Remote APIs are optional alternatives.',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         SwitchListTile(
           title: const Text('Offline-only Mode'),
           subtitle: Text(CopyDeck.tr('status.offline')),
@@ -1273,15 +1502,35 @@ class SettingsHubScreen extends ConsumerWidget {
           onChanged: (v) => ref.read(appUiProvider.notifier).setOfflineOnly(v),
         ),
         ListTile(
-          title: const Text('Active Explanation Provider'),
-          subtitle: Text(uiState.activeProviderId),
+          title: const Text('Active Explanation Coach'),
+          subtitle: Text(
+            uiState.activeProviderId == 'template'
+                ? 'Template Coach (Built-in, 0 MB, Offline)'
+                : uiState.activeProviderId == 'builtin'
+                    ? 'Built-in Qwen 0.6B (Simulated Engine)'
+                    : uiState.activeProviderId.startsWith('local:')
+                        ? 'Local GGUF Model (On-Device RAM)'
+                        : 'Remote API (OpenAI / Cloud)',
+          ),
           trailing: DropdownButton<String>(
             value: uiState.activeProviderId,
             items: const [
-              DropdownMenuItem(value: 'template', child: Text('Template Coach')),
-              DropdownMenuItem(value: 'builtin', child: Text('Built-in Model')),
-              DropdownMenuItem(value: 'local:default', child: Text('Local GGUF')),
-              DropdownMenuItem(value: 'remote:default', child: Text('My Own API')),
+              DropdownMenuItem(
+                value: 'template',
+                child: Text('Template Coach (Built-in, 0 MB)'),
+              ),
+              DropdownMenuItem(
+                value: 'builtin',
+                child: Text('Built-in Qwen 0.6B (Local)'),
+              ),
+              DropdownMenuItem(
+                value: 'local:default',
+                child: Text('Local GGUF (.gguf file)'),
+              ),
+              DropdownMenuItem(
+                value: 'remote:default',
+                child: Text('My Own API (Cloud)'),
+              ),
             ],
             onChanged: (val) {
               if (val != null) {
@@ -1565,15 +1814,123 @@ class _ProviderEditorScreenState extends ConsumerState<ProviderEditorScreen> {
 }
 
 /// Screen 13: Model Manager, RAM-Fit Check & Storage Screen (Stories E-4, H-1, H-2, I-3).
-class ModelAndStorageScreen extends ConsumerWidget {
+class ModelAndStorageScreen extends ConsumerStatefulWidget {
   const ModelAndStorageScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ModelAndStorageScreen> createState() =>
+      _ModelAndStorageScreenState();
+}
+
+class _ModelAndStorageScreenState extends ConsumerState<ModelAndStorageScreen> {
+  final TextEditingController _customPathCtrl = TextEditingController();
+
+  @override
+  void dispose() {
+    _customPathCtrl.dispose();
+    super.dispose();
+  }
+
+  void _showSetCustomModelDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Link Custom GGUF File'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Enter the absolute path to your downloaded .gguf model on this device:',
+              style: TextStyle(fontSize: 13),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _customPathCtrl,
+              decoration: const InputDecoration(
+                hintText: '/storage/emulated/0/Download/model.gguf',
+                labelText: 'Model File Path',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              final path = _customPathCtrl.text.trim();
+              if (path.isNotEmpty) {
+                final services = ref.read(appServicesProvider);
+                services.storage.saveProviderProfile({
+                  'id': 'local:default',
+                  'type': 'local',
+                  'display_name': 'Custom GGUF Model',
+                  'config_json': jsonEncode({'modelPath': path, 'quant': 'Q4_K_M'}),
+                  'secret_ref': null,
+                  'created_at': DateTime.now().millisecondsSinceEpoch,
+                });
+                ref.read(appUiProvider.notifier).setActiveProvider('local:default');
+                Navigator.of(ctx).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Linked and set "$path" as active GGUF model.'),
+                  ),
+                );
+              }
+            },
+            child: const Text('Save & Activate'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showWipeAllConfirmation(BuildContext context) {
+    final ctrl = TextEditingController();
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Type DELETE to wipe all data'),
+        content: TextField(
+          controller: ctrl,
+          decoration: const InputDecoration(hintText: 'DELETE'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              if (ctrl.text.trim() == 'DELETE') {
+                ref.read(appUiProvider.notifier).wipeAll();
+                Navigator.of(ctx).pop();
+                Navigator.of(context).pop();
+              }
+            },
+            child: const Text('Confirm Wipe'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final uiState = ref.watch(appUiProvider);
     final services = ref.watch(appServicesProvider);
     final usage = services.storage.computeStorageUsage();
+
     final ramFit06B = ModelRamGuard.evaluateFit(
       fileSizeBytes: 419430400,
+      availableRamMb: 6144,
+    );
+    final ramFit17B = ModelRamGuard.evaluateFit(
+      fileSizeBytes: 1258291200,
       availableRamMb: 6144,
     );
     final ramFit4B = ModelRamGuard.evaluateFit(
@@ -1586,29 +1943,192 @@ class ModelAndStorageScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          Card(
+            color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.35),
+            margin: const EdgeInsets.only(bottom: 16),
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.psychology, color: Theme.of(context).colorScheme.primary),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Active Coach: ${uiState.activeProviderId == "template" ? "Template Coach (Built-in, 0 MB)" : uiState.activeProviderId == "builtin" ? "Built-in Qwen 0.6B" : uiState.activeProviderId.startsWith("local:") ? "Local GGUF Model" : "Remote API"}',
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Do you need to download a model?\n'
+                    'No! The default Template Coach runs 100% offline out-of-the-box and uses Stockfish + 15 tactic algorithms with 0 MB extra download.\n\n'
+                    'Local GGUF models below are optional on-device neural LLMs for users who want neural prose inference via llama.cpp.',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                  const SizedBox(height: 10),
+                  if (uiState.activeProviderId != 'template')
+                    FilledButton.tonalIcon(
+                      onPressed: () {
+                        ref.read(appUiProvider.notifier).setActiveProvider('template');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Switched to Built-in Template Coach (0 MB, 100% offline).'),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.check_circle_outline, size: 18),
+                      label: const Text('Switch back to Template Coach (0 MB)'),
+                    ),
+                ],
+              ),
+            ),
+          ),
+
           const Text(
-            'On-Device Model Catalogue (Part 27.2)',
+            'On-Device GGUF Models (Optional)',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
+          const SizedBox(height: 4),
+          const Text(
+            'Quantized GGUF models run locally on your device CPU/RAM with zero cloud data transmission.',
+            style: TextStyle(fontSize: 12, color: Colors.grey),
+          ),
+          const SizedBox(height: 8),
+
           Card(
-            child: ListTile(
-              title: const Text('Qwen3 0.6B (Q4_K_M) • ~0.4 GB'),
-              subtitle: Text(
-                'Licence: Apache 2.0 • RAM Verdict: ${ramFit06B.verdict.name.toUpperCase()} (${ramFit06B.estimatedFootprintMb} MB)',
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Qwen3 0.6B (Q4_K_M) • ~0.4 GB',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Chip(
+                        label: Text(
+                          ramFit06B.verdict.name.toUpperCase(),
+                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                        ),
+                        backgroundColor: ramFit06B.verdict == RamFitVerdict.fits
+                            ? Colors.green.withValues(alpha: 0.15)
+                            : Colors.orange.withValues(alpha: 0.15),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Licence: Apache 2.0 • Estimated Footprint: ${ramFit06B.estimatedFootprintMb} MB\n'
+                    'Recommended for devices with 4 GB+ RAM. Built-in local candidate architecture.',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  const SizedBox(height: 8),
+                  FilledButton.tonal(
+                    onPressed: () {
+                      ref.read(appUiProvider.notifier).setActiveProvider('builtin');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Selected Qwen3 0.6B as active local engine.')),
+                      );
+                    },
+                    child: Text(
+                      uiState.activeProviderId == 'builtin'
+                          ? 'Active Local Engine'
+                          : 'Select Qwen 0.6B',
+                    ),
+                  ),
+                ],
               ),
-              trailing: const Chip(label: Text('Built-in')),
             ),
           ),
+
           Card(
-            child: ListTile(
-              title: const Text('Qwen3 4B (Q4_K_M) • ~2.6 GB'),
-              subtitle: Text(
-                'Licence: Apache 2.0 • RAM Verdict on 4 GB device: ${ramFit4B.verdict.name.toUpperCase()}',
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Qwen3 1.7B (Q4_K_M) • ~1.2 GB',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Chip(
+                        label: Text(
+                          ramFit17B.verdict.name.toUpperCase(),
+                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                        ),
+                        backgroundColor: ramFit17B.verdict == RamFitVerdict.fits
+                            ? Colors.green.withValues(alpha: 0.15)
+                            : Colors.orange.withValues(alpha: 0.15),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Licence: Apache 2.0 • Estimated Footprint: ${ramFit17B.estimatedFootprintMb} MB\n'
+                    'Higher nuance coaching. Recommended for devices with 6 GB+ RAM.',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ],
               ),
-              trailing: const Chip(label: Text('Catalogue')),
             ),
           ),
-          const Divider(height: 24),
+
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Phi-4 Mini 3.8B (Q4_K_M) • ~2.6 GB',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Chip(
+                        label: Text(
+                          ramFit4B.verdict.name.toUpperCase(),
+                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                        ),
+                        backgroundColor: Colors.red.withValues(alpha: 0.15),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Licence: MIT • Estimated Footprint: ${ramFit4B.estimatedFootprintMb} MB\n'
+                    'Heavyweight model. Requires 8 GB+ RAM device.',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 12),
+          OutlinedButton.icon(
+            onPressed: () => _showSetCustomModelDialog(context),
+            icon: const Icon(Icons.folder_open),
+            label: const Text('Link Downloaded .gguf File from Device'),
+          ),
+
+          const Divider(height: 32),
           const Text(
             'Storage Breakdown (Story H-2)',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -1646,39 +2166,9 @@ class ModelAndStorageScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           FilledButton.tonalIcon(
-            onPressed: () => _showWipeAllConfirmation(context, ref),
+            onPressed: () => _showWipeAllConfirmation(context),
             icon: const Icon(Icons.delete_forever),
             label: const Text('Wipe All Data & Return to Onboarding'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showWipeAllConfirmation(BuildContext context, WidgetRef ref) {
-    final ctrl = TextEditingController();
-    showDialog<void>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Type DELETE to wipe all data'),
-        content: TextField(
-          controller: ctrl,
-          decoration: const InputDecoration(hintText: 'DELETE'),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () {
-              if (ctrl.text.trim() == 'DELETE') {
-                ref.read(appUiProvider.notifier).wipeAll();
-                Navigator.of(ctx).pop();
-                Navigator.of(context).pop();
-              }
-            },
-            child: const Text('Confirm Wipe'),
           ),
         ],
       ),
