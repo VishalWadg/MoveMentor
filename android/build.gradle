@@ -13,10 +13,14 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
-subprojects {
-    plugins.withId('com.android.library') {
-        project.android {
-            compileSdkVersion 36
+subprojects { project ->
+    if (project.name != "app") {
+        afterEvaluate {
+            if (project.hasProperty("android")) {
+                project.android {
+                    compileSdkVersion 36
+                }
+            }
         }
     }
 }
