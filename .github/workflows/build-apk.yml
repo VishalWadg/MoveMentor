@@ -1,0 +1,91 @@
+name: Build MoveMentor APK
+
+on:
+  push:
+    branches: [ "**" ]
+    tags-ignore: [ "v*", "*" ]
+  pull_request:
+    branches: [ "main", "master", "develop" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build-apk:
+    name: Run Tests & Build Android APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Verify Flutter & Dart versions
+        run: flutter --version
+
+      - name: Ensure Android platform files are generated
+        run: |
+          flutter create --platforms=android --project-name=movementor --org=com.movementor .
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify Opening Book Asset via CI Script (Part 27.1)
+        run: dart run tool/build_openings_db.dart --verify
+
+      - name: Run static analysis
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Run unit and contract test suite (Part 30)
+        run: flutter test
+
+      - name: Configure Android Signing (Optional Secrets or Debug Fallback)
+        id: signing
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$KEY_ALIAS" ]; then
+            echo "$KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
+            cat <<EOF > android/key.properties
+          storePassword=$STORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          storeFile=upload-keystore.jks
+          EOF
+            echo "signed=true" >> $GITHUB_OUTPUT
+          else
+            echo "No Android signing secrets configured; building release APK signed with debug key."
+            echo "signed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build Release APK (split-per-abi + universal)
+        run: |
+          flutter build apk --release --split-per-abi
+          flutter build apk --release
+          cp build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/MoveMentor-${{ github.sha }}.apk
+
+      - name: Upload MoveMentor APK Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: MoveMentor-APK-${{ github.sha }}
+          path: |
+            build/app/outputs/flutter-apk/*.apk
+            build/app/outputs/flutter-apk/*.sha1
+          if-no-files-found: error
+          retention-days: 30

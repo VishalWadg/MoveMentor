@@ -1,0 +1,18 @@
+{
+  "status.offline": "Offline mode. Your games and analysis stay on this phone.",
+  "status.online": "Online features available.",
+  "import.queue": "Needs internet. We can import these games when you are back online.",
+  "import.ratelimit": "The site asked us to slow down. Resuming in {seconds} s.",
+  "import.dupes": "{n} games were already in your library and were skipped.",
+  "analysis.running": "Analysing on your phone. You can leave the app.",
+  "analysis.thermal": "Your phone is warm, so analysis is running more slowly.",
+  "coach.template_marker": "Explained by template",
+  "coach.retry": "Try again with {provider}",
+  "remote.consent_title": "Send this to your chosen AI service?",
+  "remote.consent_body": "Only the position and move facts shown below leave your phone. No player names.",
+  "model.too_large": "This model is too big for the memory free right now. Try a smaller version.",
+  "delete.confirm": "Delete {n} games and their analysis? This cannot be undone.",
+  "empty.library": "No games yet. Add one to get your first review.",
+  "error.generic_action": "Something went wrong. {action}",
+  "disclaimer.affiliation": "Not affiliated with or endorsed by Lichess or Chess.com."
+}

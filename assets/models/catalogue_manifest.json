@@ -1,0 +1,90 @@
+{
+  "manifestVersion": 1,
+  "signature": "TBD-ed25519-manifest-sig",
+  "models": [
+    {
+      "id": "qwen3-0.6b-q4_k_m",
+      "name": "Qwen3 0.6B (Built-in Candidate A)",
+      "sizeBytes": 419430400,
+      "quant": "Q4_K_M",
+      "licenceId": "Apache-2.0",
+      "requiresLicenceAcceptance": false,
+      "sha256": "TBD-from-source",
+      "url": "TBD",
+      "minRamMb": 4096,
+      "recommendedBand": "Novice",
+      "role": "bundled",
+      "disableThinkingMode": true
+    },
+    {
+      "id": "qwen3-1.7b-q4_k_m",
+      "name": "Qwen3 1.7B (Candidate B / Optional Download)",
+      "sizeBytes": 1258291200,
+      "quant": "Q4_K_M",
+      "licenceId": "Apache-2.0",
+      "requiresLicenceAcceptance": false,
+      "sha256": "TBD-from-source",
+      "url": "TBD",
+      "minRamMb": 6144,
+      "recommendedBand": "Intermediate",
+      "role": "catalogue",
+      "disableThinkingMode": true
+    },
+    {
+      "id": "smollm3-3b-q4_k_m",
+      "name": "SmolLM3 3B",
+      "sizeBytes": 2097152000,
+      "quant": "Q4_K_M",
+      "licenceId": "Apache-2.0",
+      "requiresLicenceAcceptance": false,
+      "sha256": "TBD-from-source",
+      "url": "TBD",
+      "minRamMb": 6144,
+      "recommendedBand": "Advanced",
+      "role": "catalogue",
+      "disableThinkingMode": false
+    },
+    {
+      "id": "phi-4-mini-3.8b-q4_k_m",
+      "name": "Phi-4 Mini 3.8B",
+      "sizeBytes": 2621440000,
+      "quant": "Q4_K_M",
+      "licenceId": "MIT",
+      "requiresLicenceAcceptance": false,
+      "sha256": "TBD-from-source",
+      "url": "TBD",
+      "minRamMb": 8192,
+      "recommendedBand": "Master",
+      "role": "catalogue",
+      "disableThinkingMode": false
+    },
+    {
+      "id": "llama-3.2-1b-q4_k_m",
+      "name": "Llama 3.2 1B Instruct",
+      "sizeBytes": 1073741824,
+      "quant": "Q4_K_M",
+      "licenceId": "Llama-3.2-Community",
+      "requiresLicenceAcceptance": true,
+      "sha256": "TBD-from-source",
+      "url": "TBD",
+      "minRamMb": 4096,
+      "recommendedBand": "Intermediate",
+      "role": "catalogue",
+      "disableThinkingMode": false
+    },
+    {
+      "id": "gemma-3-1b-q4_k_m",
+      "name": "Gemma 3 1B Instruct",
+      "sizeBytes": 858993459,
+      "quant": "Q4_K_M",
+      "licenceId": "Gemma-Terms-of-Use",
+      "requiresLicenceAcceptance": true,
+      "sha256": "TBD-from-source",
+      "url": "TBD",
+      "minRamMb": 4096,
+      "recommendedBand": "Intermediate",
+      "role": "catalogue",
+      "disableThinkingMode": false
+    }
+  ]
+}

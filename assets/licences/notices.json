@@ -1,0 +1,50 @@
+[
+  {
+    "component": "Stockfish Chess Engine & NNUE Network",
+    "licence": "GNU General Public License v3.0 (GPLv3)",
+    "requiresAcceptance": false,
+    "text": "Stockfish is free, open-source software licensed under the GNU General Public License v3.0. Corresponding source code and build instructions are distributed with this repository."
+  },
+  {
+    "component": "llama.cpp On-Device Inference Runtime",
+    "licence": "MIT License",
+    "requiresAcceptance": false,
+    "text": "Copyright (c) 2023-2026 Georgi Gerganov and contributors. Permission is hereby granted, free of charge, to any person obtaining a copy of this software..."
+  },
+  {
+    "component": "Lichess chess-openings & Puzzle Themes Dataset",
+    "licence": "Creative Commons Zero v1.0 Universal (CC0)",
+    "requiresAcceptance": false,
+    "text": "Opening recognition (EPD, ECO, name) and tactical benchmark themes are sourced from the public domain Lichess datasets (https://github.com/lichess-org/chess-openings)."
+  },
+  {
+    "component": "chess (Dart Chess Library)",
+    "licence": "BSD 2-Clause License",
+    "requiresAcceptance": false,
+    "text": "Copyright (c) 2014, Daveiefer. All rights reserved. Redistribution and use in source and binary forms, with or without modification, are permitted."
+  },
+  {
+    "component": "Qwen3 (0.6B / 1.7B / 4B) & SmolLM3 3B",
+    "licence": "Apache License 2.0",
+    "requiresAcceptance": false,
+    "text": "Licensed under the Apache License, Version 2.0. Permissively licensed for local and bundled use."
+  },
+  {
+    "component": "Phi-4 Mini 3.8B",
+    "licence": "MIT License",
+    "requiresAcceptance": false,
+    "text": "Copyright (c) Microsoft Corporation. Licensed under the MIT License."
+  },
+  {
+    "component": "Llama 3.2 (1B / 3B) Community Licence",
+    "licence": "Llama-3.2-Community",
+    "requiresAcceptance": true,
+    "text": "Llama 3.2 Community License Agreement: Includes attribution requirements, acceptable use policy, and monthly active user threshold conditions. Must be accepted before loading."
+  },
+  {
+    "component": "Gemma 3 (1B / 4B) Terms of Use",
+    "licence": "Gemma-Terms-of-Use",
+    "requiresAcceptance": true,
+    "text": "Gemma Terms of Use: Subject to Google Gemma prohibited use policy and redistribution terms. Must be accepted before first load."
+  }
+]
