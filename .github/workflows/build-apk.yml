@@ -1,25 +1,37 @@
-name: Build MoveMentor APK
+name: Build & Release MoveMentor APK
 
 on:
   push:
-    branches: [ "**" ]
-    tags-ignore: [ "v*", "*" ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ "main", "master", "develop" ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  test-and-build-apk:
-    name: Run Tests & Build Android APK
+  test-build-and-release:
+    name: Test, Build & Publish APK
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract Version Info from pubspec.yaml
+        id: ver
+        run: |
+          BASE_VER=$(grep '^version: ' pubspec.yaml | sed 's/version: //' | sed 's/+.*//' | tr -d '[:space:]')
+          if [ -z "$BASE_VER" ]; then
+            BASE_VER="0.2.0"
+          fi
+          echo "tag=v${BASE_VER}" >> $GITHUB_OUTPUT
+          echo "version=${BASE_VER}" >> $GITHUB_OUTPUT
+          echo "Detected version: $BASE_VER (tag: v${BASE_VER})"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -70,18 +82,73 @@ jobs:
             echo "signed=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Build Release APK (split-per-abi + universal)
+      - name: Build Universal & Split-ABI Release APKs
         run: |
-          flutter build apk --release --split-per-abi
-          flutter build apk --release
-          cp build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/MoveMentor-${{ github.sha }}.apk
+          flutter build apk --release --build-name=${{ steps.ver.outputs.version }} --build-number=${{ github.run_number }}
+          flutter build apk --release --split-per-abi --build-name=${{ steps.ver.outputs.version }} --build-number=${{ github.run_number }}
 
-      - name: Upload MoveMentor APK Artifacts
+      - name: Prepare Release Assets & SHA-256 Checksums
+        run: |
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-release.apk "dist/MoveMentor-${{ steps.ver.outputs.tag }}-universal.apk"
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk "dist/MoveMentor-${{ steps.ver.outputs.tag }}-arm64-v8a.apk"
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk "dist/MoveMentor-${{ steps.ver.outputs.tag }}-armeabi-v7a.apk"
+          cp build/app/outputs/flutter-apk/app-x86_64-release.apk "dist/MoveMentor-${{ steps.ver.outputs.tag }}-x86_64.apk"
+          cd dist
+          sha256sum *.apk > SHA256SUMS.txt
+
+      - name: Upload MoveMentor APK Artifacts to Actions
         uses: actions/upload-artifact@v4
         with:
-          name: MoveMentor-APK-${{ github.sha }}
+          name: MoveMentor-APK-${{ steps.ver.outputs.tag }}-build${{ github.run_number }}
           path: |
-            build/app/outputs/flutter-apk/*.apk
-            build/app/outputs/flutter-apk/*.sha1
+            dist/*
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish GitHub Release
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: "MoveMentor ${{ steps.ver.outputs.tag }}"
+          generate_release_notes: true
+          files: |
+            dist/MoveMentor-${{ steps.ver.outputs.tag }}-universal.apk
+            dist/MoveMentor-${{ steps.ver.outputs.tag }}-arm64-v8a.apk
+            dist/MoveMentor-${{ steps.ver.outputs.tag }}-armeabi-v7a.apk
+            dist/MoveMentor-${{ steps.ver.outputs.tag }}-x86_64.apk
+            dist/SHA256SUMS.txt
+
+      - name: Send Telegram Release Notification
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TAG: ${{ steps.ver.outputs.tag }}
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "Telegram credentials not configured in repository secrets; skipping notification."
+            exit 0
+          fi
+
+          MESSAGE=$(cat <<EOF
+          🚀 <b>New MoveMentor Release: ${TAG}</b>
+          A new Android build has been built and published!
+
+          <b>What's New:</b>
+          • Offline-first Stockfish evaluation and move accuracy curves
+          • Deterministic tactic & positional tag detection (15+ rules)
+          • Modular AI Chess Mentor with GBNF grammar constraints
+          • 100% offline-by-default, zero tracking, local SQLite database
+
+          📥 <a href="https://github.com/VishalWadg/MoveMentor/releases/download/${TAG}/MoveMentor-${TAG}-universal.apk">Direct APK Download</a>
+          🌐 <a href="https://github.com/VishalWadg/MoveMentor/releases/tag/${TAG}">GitHub Release Notes</a>
+          EOF
+          )
+
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "parse_mode=HTML" \
+            -d "disable_web_page_preview=true" \
+            --data-urlencode "text=${MESSAGE}"
