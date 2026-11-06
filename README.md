@@ -15,6 +15,7 @@ For developers, beginners, and reviewers, comprehensive documentation is organiz
 - 📜 [**03. Architectural Decision Records (ADRs)**](docs/03_ARCHITECTURAL_DECISION_RECORDS.md) — Historical trade-offs: offline-first privacy chokepoint, deterministic tactic detection vs LLM hallucinations, staged execution, and Win% accuracy formulas.
 - ⚡ [**04. Pipeline & Data Flow**](docs/04_PIPELINE_AND_DATA_FLOW.md) — Tracing a game move through the 6-stage pipeline from raw PGN to Stockfish evaluations, $\Delta W$ drop, critical moments, tags, and AI coaching.
 - 🎓 [**05. Beginner's Guide & Walkthrough**](docs/05_BEGINNER_GUIDE_AND_WALKTHROUGH.md) — "Explain Like I'm 5" (ELI5), folder mental map, code walkthrough, and technical interview questions & answers.
+- 🧼 [**06. Simplification & Library Reuse Strategy**](docs/06_PROJECT_SIMPLIFICATION_AND_REUSE.md) — How we simplified the codebase: feature-first modularization, export facade pattern, `fl_chart` interactive scrubbing, and dependency hygiene.
 
 ---
 
