@@ -6,6 +6,18 @@
 
 ---
 
+## 📚 Complete Project Documentation Suite
+
+For developers, beginners, and reviewers, comprehensive documentation is organized in the [`docs/`](docs/) directory:
+
+- 🏛️ [**01. Architecture Overview**](docs/01_ARCHITECTURE_OVERVIEW.md) — Hexagonal (Ports & Adapters) design, 5 core layers, dependency inversion, and Mermaid system architecture diagram.
+- 🛠️ [**02. Tech Stack Deep Dive**](docs/02_TECH_STACK_DEEP_DIVE.md) — Why Flutter, Riverpod, Stockfish 16 NNUE, SQLite/FTS5, and on-device GGUF inference were chosen.
+- 📜 [**03. Architectural Decision Records (ADRs)**](docs/03_ARCHITECTURAL_DECISION_RECORDS.md) — Historical trade-offs: offline-first privacy chokepoint, deterministic tactic detection vs LLM hallucinations, staged execution, and Win% accuracy formulas.
+- ⚡ [**04. Pipeline & Data Flow**](docs/04_PIPELINE_AND_DATA_FLOW.md) — Tracing a game move through the 6-stage pipeline from raw PGN to Stockfish evaluations, $\Delta W$ drop, critical moments, tags, and AI coaching.
+- 🎓 [**05. Beginner's Guide & Walkthrough**](docs/05_BEGINNER_GUIDE_AND_WALKTHROUGH.md) — "Explain Like I'm 5" (ELI5), folder mental map, code walkthrough, and technical interview questions & answers.
+
+---
+
 ## Key Features & Architecture
 
 1. **Hexagonal (Ports & Adapters) Architecture**:
