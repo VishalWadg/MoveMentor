@@ -75,7 +75,10 @@ class _ProviderEditorScreenState extends ConsumerState<ProviderEditorScreen> {
             ),
           ),
           const SizedBox(height: 12),
-          Row(
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 12,
+            runSpacing: 8,
             children: [
               OutlinedButton(
                 onPressed: () {
@@ -83,8 +86,14 @@ class _ProviderEditorScreenState extends ConsumerState<ProviderEditorScreen> {
                 },
                 child: const Text('Test connection'),
               ),
-              const SizedBox(width: 12),
-              Text(_testStatus),
+              if (_testStatus.isNotEmpty)
+                Text(
+                  _testStatus,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
             ],
           ),
           const SizedBox(height: 16),

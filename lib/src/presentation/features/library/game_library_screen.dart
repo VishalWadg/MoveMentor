@@ -109,17 +109,28 @@ class _GameLibraryScreenState extends ConsumerState<GameLibraryScreen> {
                             children: [
                               if (myAcc != null)
                                 Chip(
-                                  label: Text('${myAcc.toStringAsFixed(1)}%'),
+                                  visualDensity: VisualDensity.compact,
+                                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                                  label: Text(
+                                    '${myAcc.toStringAsFixed(1)}%',
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
                                 ),
                               IconButton(
-                                icon: const Icon(Icons.play_circle_outline),
+                                visualDensity: VisualDensity.compact,
+                                padding: const EdgeInsets.all(4),
+                                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                                icon: const Icon(Icons.play_circle_outline, size: 20),
                                 tooltip: 'Analyse Game Offline',
                                 onPressed: g.isAnalysable
                                     ? () => _runGameAnalysisDialog(context, g.id)
                                     : null,
                               ),
                               IconButton(
-                                icon: const Icon(Icons.delete_outline),
+                                visualDensity: VisualDensity.compact,
+                                padding: const EdgeInsets.all(4),
+                                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                                icon: const Icon(Icons.delete_outline, size: 20),
                                 tooltip: 'Delete Game',
                                 onPressed: () {
                                   ref.read(appUiProvider.notifier).deleteGame(g.id);

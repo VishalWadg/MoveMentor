@@ -65,7 +65,7 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
       children: [
         // Top Header (Part 28.3 Wireframe: Game vs opponent + Accuracy %)
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Text(
@@ -73,20 +73,27 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
-            if (myAcc != null)
-              Chip(
-                label: Text(
-                  'Accuracy ${myAcc.toStringAsFixed(0)}%',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
             IconButton(
+              visualDensity: VisualDensity.compact,
               icon: const Icon(Icons.flip_camera_android),
               tooltip: 'Flip Board',
               onPressed: () => setState(() => _flipped = !_flipped),
             ),
           ],
         ),
+        if (myAcc != null) ...[
+          const SizedBox(height: 4),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Chip(
+              visualDensity: VisualDensity.compact,
+              label: Text(
+                'Accuracy ${myAcc.toStringAsFixed(0)}%',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
         const SizedBox(height: 8),
         // Interactive Board with Best-Move Arrow
         if (currentPos != null)
@@ -98,12 +105,17 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
           ),
         const SizedBox(height: 8),
         // Navigation Bar: |< < > >| and [Play line] (Part 28.3)
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 8,
+          runSpacing: 8,
           children: [
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
+                  visualDensity: VisualDensity.compact,
                   icon: const Icon(Icons.first_page),
                   tooltip: 'First move',
                   onPressed: () => setState(() {
@@ -112,6 +124,7 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
                   }),
                 ),
                 IconButton(
+                  visualDensity: VisualDensity.compact,
                   icon: const Icon(Icons.chevron_left),
                   tooltip: 'Previous move',
                   onPressed: () => setState(() {
@@ -120,6 +133,7 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
                   }),
                 ),
                 IconButton(
+                  visualDensity: VisualDensity.compact,
                   icon: const Icon(Icons.chevron_right),
                   tooltip: 'Next move',
                   onPressed: () => setState(() {
@@ -128,6 +142,7 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
                   }),
                 ),
                 IconButton(
+                  visualDensity: VisualDensity.compact,
                   icon: const Icon(Icons.last_page),
                   tooltip: 'Last move',
                   onPressed: () => setState(() {
@@ -137,23 +152,34 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
                 ),
               ],
             ),
-            // Story I-7: Toggle "My moves / Both sides"
-            FilterChip(
-              label: Text(uiState.reviewBothSides ? 'Both sides' : 'My moves'),
-              selected: uiState.reviewBothSides,
-              onSelected: (v) =>
-                  ref.read(appUiProvider.notifier).setReviewBothSides(v),
-            ),
-            OutlinedButton.icon(
-              onPressed: _playingLine
-                  ? null
-                  : () async {
-                      setState(() => _playingLine = true);
-                      await Future<void>.delayed(const Duration(milliseconds: 300));
-                      if (mounted) setState(() => _playingLine = false);
-                    },
-              icon: const Icon(Icons.play_arrow, size: 16),
-              label: const Text('Play line'),
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                // Story I-7: Toggle "My moves / Both sides"
+                FilterChip(
+                  visualDensity: VisualDensity.compact,
+                  label: Text(uiState.reviewBothSides ? 'Both sides' : 'My moves'),
+                  selected: uiState.reviewBothSides,
+                  onSelected: (v) =>
+                      ref.read(appUiProvider.notifier).setReviewBothSides(v),
+                ),
+                OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                  ),
+                  onPressed: _playingLine
+                      ? null
+                      : () async {
+                          setState(() => _playingLine = true);
+                          await Future<void>.delayed(const Duration(milliseconds: 300));
+                          if (mounted) setState(() => _playingLine = false);
+                        },
+                  icon: const Icon(Icons.play_arrow, size: 16),
+                  label: const Text('Play line'),
+                ),
+              ],
             ),
           ],
         ),
@@ -202,11 +228,15 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (currentAnalysis != null)
+                if (currentAnalysis != null)
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
+                    runSpacing: 6,
+                    children: [
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           MoveBadgeChip(classification: currentAnalysis.label),
                           const SizedBox(width: 8),
@@ -218,22 +248,38 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
                             ),
                           ),
                         ],
-                      )
-                    else
-                      const Text(
-                        'Select a move or run analysis to see coaching.',
-                        style: TextStyle(fontWeight: FontWeight.w600),
                       ),
-                    Chip(
-                      label: Text(
-                        coachResp?.isFallback == true
-                            ? CopyDeck.tr('coach.template_marker')
-                            : '[${uiState.activeProviderId}]',
-                        style: const TextStyle(fontSize: 11),
+                      Chip(
+                        visualDensity: VisualDensity.compact,
+                        label: Text(
+                          coachResp?.isFallback == true
+                              ? CopyDeck.tr('coach.template_marker')
+                              : '[${uiState.activeProviderId}]',
+                          style: const TextStyle(fontSize: 11),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  )
+                else
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Select a move or run analysis to see coaching.',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Chip(
+                        visualDensity: VisualDensity.compact,
+                        label: Text(
+                          '[${uiState.activeProviderId}]',
+                          style: const TextStyle(fontSize: 11),
+                        ),
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: 8),
                 if (coachResp != null) ...[
                   Text(coachResp.coachCommentary),
@@ -262,6 +308,7 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 6,
+                    runSpacing: 6,
                     children: [
                       ActionChip(
                         label: const Text('Explain simpler'),
@@ -291,6 +338,9 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
                   ),
                   const SizedBox(height: 6),
                   OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                    ),
                     onPressed: () => _explainCurrentPlyOnDemand(gameId, safePly),
                     icon: const Icon(Icons.psychology_outlined),
                     label: const Text('Explain this move with AI Coach'),

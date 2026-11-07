@@ -59,32 +59,44 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
               margin: const EdgeInsets.only(bottom: 16),
               child: Padding(
                 padding: const EdgeInsets.all(12),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.cloud_off, color: Colors.amber),
-                    const SizedBox(width: 12),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Offline-Only Mode is Active',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                    const Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.cloud_off, color: Colors.amber),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Offline-Only Mode is Active',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 2),
+                              Text(
+                                'Network requests are blocked for privacy. To fetch directly from Lichess or Chess.com, tap Go Online.',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 2),
-                          Text(
-                            'Network requests are blocked for privacy. To fetch directly from Lichess or Chess.com, tap Go Online.',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    FilledButton.tonal(
-                      onPressed: () {
-                        ref.read(appUiProvider.notifier).setOfflineOnly(false);
-                      },
-                      child: const Text('Go Online'),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FilledButton.tonal(
+                        style: FilledButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
+                        ),
+                        onPressed: () {
+                          ref.read(appUiProvider.notifier).setOfflineOnly(false);
+                        },
+                        child: const Text('Go Online'),
+                      ),
                     ),
                   ],
                 ),
@@ -96,32 +108,44 @@ class _ImportHubScreenState extends ConsumerState<ImportHubScreen> {
               margin: const EdgeInsets.only(bottom: 16),
               child: Padding(
                 padding: const EdgeInsets.all(12),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.cloud_done, color: Colors.green),
-                    const SizedBox(width: 12),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Online Mode Active',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                    const Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.cloud_done, color: Colors.green),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Online Mode Active',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 2),
+                              Text(
+                                'Ready to import your games from Lichess or Chess.com.',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 2),
-                          Text(
-                            'Ready to import your games from Lichess or Chess.com.',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    OutlinedButton(
-                      onPressed: () {
-                        ref.read(appUiProvider.notifier).setOfflineOnly(true);
-                      },
-                      child: const Text('Go Offline'),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
+                        ),
+                        onPressed: () {
+                          ref.read(appUiProvider.notifier).setOfflineOnly(true);
+                        },
+                        child: const Text('Go Offline'),
+                      ),
                     ),
                   ],
                 ),

@@ -60,140 +60,139 @@ class SettingsHubScreen extends ConsumerWidget {
           ),
         ),
         SwitchListTile(
+          contentPadding: EdgeInsets.zero,
           title: const Text('Offline-only Mode'),
           subtitle: Text(CopyDeck.tr('status.offline')),
           value: uiState.offlineOnly,
           onChanged: (v) => ref.read(appUiProvider.notifier).setOfflineOnly(v),
         ),
-        ListTile(
-          title: const Text('Active Explanation Coach'),
-          subtitle: Text(
-            uiState.activeProviderId == 'template'
-                ? 'Template Coach (Built-in, 0 MB, Offline)'
-                : uiState.activeProviderId == 'builtin'
-                    ? 'Built-in Qwen 0.6B (Simulated Engine)'
-                    : uiState.activeProviderId.startsWith('local:')
-                        ? 'Local GGUF Model (On-Device RAM)'
-                        : 'Remote API (OpenAI / Cloud)',
-          ),
-          trailing: DropdownButton<String>(
-            value: uiState.activeProviderId,
-            items: const [
-              DropdownMenuItem(
-                value: 'template',
-                child: Text('Template Coach (Built-in, 0 MB)'),
-              ),
-              DropdownMenuItem(
-                value: 'builtin',
-                child: Text('Built-in Qwen 0.6B (Local)'),
-              ),
-              DropdownMenuItem(
-                value: 'local:default',
-                child: Text('Local GGUF (.gguf file)'),
-              ),
-              DropdownMenuItem(
-                value: 'remote:default',
-                child: Text('My Own API (Cloud)'),
-              ),
-            ],
-            onChanged: (val) {
-              if (val != null) {
-                ref.read(appUiProvider.notifier).setActiveProvider(val);
-              }
-            },
-          ),
+        _SettingsDropdownTile<String>(
+          title: 'Active Explanation Coach',
+          subtitle: uiState.activeProviderId == 'template'
+              ? 'Template Coach (Built-in, 0 MB, Offline)'
+              : uiState.activeProviderId == 'builtin'
+                  ? 'Built-in Qwen 0.6B (Simulated Engine)'
+                  : uiState.activeProviderId.startsWith('local:')
+                      ? 'Local GGUF Model (On-Device RAM)'
+                      : 'Remote API (OpenAI / Cloud)',
+          value: uiState.activeProviderId,
+          items: const [
+            DropdownMenuItem(
+              value: 'template',
+              child: Text('Template Coach (Built-in, 0 MB)'),
+            ),
+            DropdownMenuItem(
+              value: 'builtin',
+              child: Text('Built-in Qwen 0.6B (Local)'),
+            ),
+            DropdownMenuItem(
+              value: 'local:default',
+              child: Text('Local GGUF (.gguf file)'),
+            ),
+            DropdownMenuItem(
+              value: 'remote:default',
+              child: Text('My Own API (Cloud)'),
+            ),
+          ],
+          onChanged: (val) {
+            if (val != null) {
+              ref.read(appUiProvider.notifier).setActiveProvider(val);
+            }
+          },
         ),
-        ListTile(
-          title: const Text('Rating Band'),
-          subtitle: Text(uiState.ratingBand.label),
-          trailing: DropdownButton<RatingBand>(
-            value: uiState.ratingBand,
-            items: RatingBand.values
-                .map((b) => DropdownMenuItem(value: b, child: Text(b.label)))
-                .toList(),
-            onChanged: (val) {
-              if (val != null) {
-                ref.read(appUiProvider.notifier).setRatingBand(val);
-              }
-            },
-          ),
+        _SettingsDropdownTile<RatingBand>(
+          title: 'Rating Band',
+          subtitle: uiState.ratingBand.label,
+          value: uiState.ratingBand,
+          items: RatingBand.values
+              .map((b) => DropdownMenuItem(value: b, child: Text(b.label)))
+              .toList(),
+          onChanged: (val) {
+            if (val != null) {
+              ref.read(appUiProvider.notifier).setRatingBand(val);
+            }
+          },
         ),
-        ListTile(
-          title: const Text('Stockfish Engine Preset'),
-          subtitle: Text(uiState.enginePresetId.toUpperCase()),
-          trailing: DropdownButton<String>(
-            value: uiState.enginePresetId,
-            items: const [
-              DropdownMenuItem(value: 'fast', child: Text('Fast')),
-              DropdownMenuItem(value: 'balanced', child: Text('Balanced')),
-              DropdownMenuItem(value: 'deep', child: Text('Deep')),
-            ],
-            onChanged: (val) {
-              if (val != null) {
-                ref.read(appUiProvider.notifier).setEnginePreset(val);
-              }
-            },
-          ),
+        _SettingsDropdownTile<String>(
+          title: 'Stockfish Engine Preset',
+          subtitle: uiState.enginePresetId.toUpperCase(),
+          value: uiState.enginePresetId,
+          items: const [
+            DropdownMenuItem(value: 'fast', child: Text('Fast')),
+            DropdownMenuItem(value: 'balanced', child: Text('Balanced')),
+            DropdownMenuItem(value: 'deep', child: Text('Deep')),
+          ],
+          onChanged: (val) {
+            if (val != null) {
+              ref.read(appUiProvider.notifier).setEnginePreset(val);
+            }
+          },
         ),
-        ListTile(
-          title: const Text('Classification Thresholds Preset'),
-          subtitle: Text(
-            uiState.classificationPresetId == 'lichess'
-                ? 'Lichess-style (10/20/30)'
-                : 'PDF-style (5/10/20)',
-          ),
-          trailing: DropdownButton<String>(
-            value: uiState.classificationPresetId,
-            items: const [
-              DropdownMenuItem(value: 'lichess', child: Text('Lichess (Default)')),
-              DropdownMenuItem(value: 'pdf', child: Text('PDF Preset')),
-            ],
-            onChanged: (val) {
-              if (val != null) {
-                ref.read(appUiProvider.notifier).setClassificationPreset(val);
-              }
-            },
-          ),
+        _SettingsDropdownTile<String>(
+          title: 'Classification Thresholds Preset',
+          subtitle: uiState.classificationPresetId == 'lichess'
+              ? 'Lichess-style (10/20/30)'
+              : 'PDF-style (5/10/20)',
+          value: uiState.classificationPresetId,
+          items: const [
+            DropdownMenuItem(value: 'lichess', child: Text('Lichess (Default)')),
+            DropdownMenuItem(value: 'pdf', child: Text('PDF Preset')),
+          ],
+          onChanged: (val) {
+            if (val != null) {
+              ref.read(appUiProvider.notifier).setClassificationPreset(val);
+            }
+          },
         ),
         const Divider(),
         ListTile(
+          contentPadding: EdgeInsets.zero,
           leading: const Icon(Icons.cloud_outlined),
           title: const Text('My Own API Editor & Payload Preview (Screen 12)'),
           subtitle: const Text('Configure endpoint, secure API key, and inspect payload'),
+          trailing: const Icon(Icons.chevron_right),
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(builder: (_) => const ProviderEditorScreen()),
           ),
         ),
         ListTile(
+          contentPadding: EdgeInsets.zero,
           leading: const Icon(Icons.memory),
           title: const Text('Local Models & Storage Manager (Screen 13)'),
           subtitle: Text(
             'Games: ${(usage.gamesBytes / 1024).toStringAsFixed(1)} KB • Cache: ${(usage.analysisCacheBytes / 1024).toStringAsFixed(1)} KB',
           ),
+          trailing: const Icon(Icons.chevron_right),
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(builder: (_) => const ModelAndStorageScreen()),
           ),
         ),
         ListTile(
+          contentPadding: EdgeInsets.zero,
           leading: const Icon(Icons.ios_share),
           title: const Text('Export Reports & Full Data Backup (Screen 14)'),
           subtitle: const Text('PDF game report, Annotated PGN, or full JSON+PGN ZIP'),
+          trailing: const Icon(Icons.chevron_right),
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(builder: (_) => const ExportDataScreen()),
           ),
         ),
         ListTile(
+          contentPadding: EdgeInsets.zero,
           leading: const Icon(Icons.bug_report_outlined),
           title: const Text('Diagnostics & Network Audit Log (Screen 15)'),
           subtitle: const Text('Engine version, tokens/sec, redacted copy & beta feedback'),
+          trailing: const Icon(Icons.chevron_right),
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(builder: (_) => const DiagnosticsScreen()),
           ),
         ),
         ListTile(
+          contentPadding: EdgeInsets.zero,
           leading: const Icon(Icons.policy_outlined),
           title: const Text('Licences, Credits & Privacy Policy (Screen 16)'),
           subtitle: Text(CopyDeck.tr('disclaimer.affiliation')),
+          trailing: const Icon(Icons.chevron_right),
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(builder: (_) => const LicencesAndPrivacyScreen()),
           ),
@@ -202,3 +201,82 @@ class SettingsHubScreen extends ConsumerWidget {
     );
   }
 }
+
+class _SettingsDropdownTile<T> extends StatelessWidget {
+  final String title;
+  final String? subtitle;
+  final T value;
+  final List<DropdownMenuItem<T>> items;
+  final ValueChanged<T?> onChanged;
+
+  const _SettingsDropdownTile({
+    required this.title,
+    this.subtitle,
+    required this.value,
+    required this.items,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+          ),
+          if (subtitle != null && subtitle!.isNotEmpty) ...[
+            const SizedBox(height: 2),
+            Text(
+              subtitle!,
+              style: TextStyle(
+                fontSize: 13,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+          const SizedBox(height: 8),
+          InputDecorator(
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<T>(
+                value: value,
+                isExpanded: true,
+                isDense: true,
+                items: items,
+                selectedItemBuilder: (context) {
+                  return items.map((item) {
+                    final child = item.child;
+                    if (child is Text) {
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          child.data ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      );
+                    }
+                    return child;
+                  }).toList();
+                },
+                onChanged: onChanged,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+

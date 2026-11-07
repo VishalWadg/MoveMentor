@@ -252,6 +252,7 @@ class InteractiveChessBoard extends StatelessWidget {
                                 left: 3,
                                 child: Text(
                                   '${8 - rankIdx}',
+                                  textScaler: TextScaler.noScaling,
                                   style: TextStyle(
                                     fontSize: 9,
                                     fontWeight: FontWeight.bold,
@@ -267,6 +268,7 @@ class InteractiveChessBoard extends StatelessWidget {
                                 right: 3,
                                 child: Text(
                                   String.fromCharCode('a'.codeUnitAt(0) + fileIdx),
+                                  textScaler: TextScaler.noScaling,
                                   style: TextStyle(
                                     fontSize: 9,
                                     fontWeight: FontWeight.bold,
@@ -280,6 +282,7 @@ class InteractiveChessBoard extends StatelessWidget {
                               Center(
                                 child: Text(
                                   glyph,
+                                  textScaler: TextScaler.noScaling,
                                   style: TextStyle(
                                     fontSize: sqSize * 0.68,
                                     height: 1.0,

@@ -146,9 +146,11 @@ class _ModelAndStorageScreenState extends ConsumerState<ModelAndStorageScreen> {
                     children: [
                       Icon(Icons.psychology, color: Theme.of(context).colorScheme.primary),
                       const SizedBox(width: 8),
-                      Text(
-                        'Active Coach: ${uiState.activeProviderId == "template" ? "Template Coach (Built-in, 0 MB)" : uiState.activeProviderId == "builtin" ? "Built-in Qwen 0.6B" : uiState.activeProviderId.startsWith("local:") ? "Local GGUF Model" : "Remote API"}',
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      Expanded(
+                        child: Text(
+                          'Active Coach: ${uiState.activeProviderId == "template" ? "Template Coach (Built-in, 0 MB)" : uiState.activeProviderId == "builtin" ? "Built-in Qwen 0.6B" : uiState.activeProviderId.startsWith("local:") ? "Local GGUF Model" : "Remote API"}',
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        ),
                       ),
                     ],
                   ),

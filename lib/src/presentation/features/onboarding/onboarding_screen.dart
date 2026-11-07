@@ -38,6 +38,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
+            runSpacing: 8,
             children: RatingBand.values.map((band) {
               return ChoiceChip(
                 label: Text('${band.label} (${band.minElo}-${band.maxElo})'),
