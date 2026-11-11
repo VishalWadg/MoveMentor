@@ -49,7 +49,9 @@ jobs:
         run: flutter --version
 
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub get
+          (cd packages/chess_review_core && dart pub get)
 
       - name: Verify Opening Book Asset via CI Script (Part 27.1)
         run: dart run tool/build_openings_db.dart --verify
@@ -57,7 +59,7 @@ jobs:
       - name: Run static analysis & pure-Dart core tests
         run: |
           flutter analyze --no-fatal-infos --no-fatal-warnings
-          (cd packages/chess_review_core && dart pub get && dart analyze && dart test)
+          (cd packages/chess_review_core && dart analyze && dart test)
 
       - name: Run unit and contract test suite (Part 30)
         run: flutter test
