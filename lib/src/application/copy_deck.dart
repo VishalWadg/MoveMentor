@@ -27,6 +27,17 @@ class CopyDeck {
     'error.generic_action': 'Something went wrong. {action}',
     'disclaimer.affiliation':
         'Not affiliated with or endorsed by Lichess or Chess.com.',
+    'engine.unreliable_analysis_title':
+        'Approximate review (fallback engine)',
+    'engine.unreliable_analysis_body':
+        'This game used the 2-ply fallback because Stockfish was unavailable. Configure Stockfish and re-analyse for reliable move labels.',
+    'engine.unavailable_title': 'Stockfish engine unavailable',
+    'engine.unavailable_body':
+        'No local Stockfish binary was found, so new analysis will fall back to an unreliable 2-ply estimate. Configure Stockfish before running review.',
+    'engine.diagnostics_fallback_title':
+        'Fallback engine active (unreliable)',
+    'engine.diagnostics_fallback_body':
+        'Real Stockfish could not start, so MoveMentor is using Minimax-2Ply fallback. Set STOCKFISH_PATH or place a Stockfish binary in a standard path.',
   };
 
   static String tr(String key, [Map<String, String> params = const {}]) {

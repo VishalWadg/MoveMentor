@@ -219,10 +219,10 @@ class StorageRepository {
     final defaultOpenings = [
       {'epd': 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq -', 'eco': 'B00', 'name': "King's Pawn Game", 'ply': 1},
       {'epd': 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq -', 'eco': 'C20', 'name': 'Open Game', 'ply': 2},
-      {'epd': 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N3/PPPP1PPP/RNBQKB1R b KQkq -', 'eco': 'C40', 'name': "King's Knight Opening", 'ply': 3},
-      {'epd': 'r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N3/PPPP1PPP/RNBQKB1R w KQkq -', 'eco': 'C44', 'name': "King's Pawn Game: Normal", 'ply': 4},
-      {'epd': 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N3/PPPP1PPP/RNBQK2R b KQkq -', 'eco': 'C60', 'name': 'Ruy Lopez', 'ply': 5},
-      {'epd': 'r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N3/PPPP1PPP/RNBQK2R b KQkq -', 'eco': 'C50', 'name': 'Italian Game', 'ply': 5},
+      {'epd': 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq -', 'eco': 'C40', 'name': "King's Knight Opening", 'ply': 3},
+      {'epd': 'r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq -', 'eco': 'C44', 'name': "King's Pawn Game: Normal", 'ply': 4},
+      {'epd': 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq -', 'eco': 'C60', 'name': 'Ruy Lopez', 'ply': 5},
+      {'epd': 'r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq -', 'eco': 'C50', 'name': 'Italian Game', 'ply': 5},
       {'epd': 'rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq -', 'eco': 'B20', 'name': 'Sicilian Defense', 'ply': 2},
       {'epd': 'rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq -', 'eco': 'A40', 'name': "Queen's Pawn Game", 'ply': 1},
       {'epd': 'rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq -', 'eco': 'D06', 'name': "Queen's Gambit", 'ply': 3},
@@ -479,6 +479,9 @@ class StorageRepository {
   // Shared Engine Eval Cache (Part 21: does NOT cascade on game delete)
   EngineEvalEntity? getEngineEval(String positionKey) =>
       _engineEvals[positionKey];
+
+  List<EngineEvalEntity> get allEngineEvals =>
+      _engineEvals.values.toList(growable: false);
 
   void saveEngineEval(EngineEvalEntity eval) {
     if (isReadOnlyRecoveryMode) return;

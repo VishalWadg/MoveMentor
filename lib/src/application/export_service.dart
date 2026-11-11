@@ -191,6 +191,12 @@ class ExportService {
     return Uint8List.fromList(encoded ?? const []);
   }
 
+  static bool isUnreliableEngineVersion(String? engineVersion) {
+    if (engineVersion == null || engineVersion.isEmpty) return false;
+    final upper = engineVersion.toUpperCase();
+    return upper.contains('UNRELIABLE') || upper.contains('MINIMAX');
+  }
+
   /// Story I-4 (FR-21): Builds Diagnostics text. By default redacts FEN, usernames, and paths.
   String buildDiagnosticsReport({
     bool redactSensitive = true,
@@ -199,9 +205,19 @@ class ExportService {
     final activeProvider =
         storage.getSetting('active_provider_id') ?? 'template';
     final offlineOnly = storage.getSetting('offline_only') ?? 'true';
+    final useNewClassifier = storage.getSetting('use_new_classifier') ?? 'true';
+    final isFallback =
+        engine.isFallbackEngine || isUnreliableEngineVersion(engine.engineVersion);
+    final unreliableEvals =
+        storage.allEngineEvals.where((e) => !e.isReliable).length;
     final buf = StringBuffer()
       ..writeln('=== MoveMentor Diagnostics (FR-21) ===')
       ..writeln('Engine Version: ${engine.engineVersion}')
+      ..writeln(
+        'Engine Status: ${isFallback ? 'UNRELIABLE FALLBACK (Real Stockfish unavailable)' : 'Healthy (Native Stockfish)'}',
+      )
+      ..writeln('Use New Classifier (v2): $useNewClassifier')
+      ..writeln('Unreliable Cached Evals: $unreliableEvals')
       ..writeln('Thermal Throttled: ${engine.isThermalThrottled}')
       ..writeln('Active Provider: $activeProvider')
       ..writeln('Offline-Only Switch: $offlineOnly')

@@ -1,0 +1,15 @@
+name: chess_review_core
+description: Pure Dart core domain for chess review, move classification, SEE, and accuracy aggregates.
+version: 0.1.0
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  meta: ^1.11.0
+  chess: ^0.8.1
+
+dev_dependencies:
+  test: ^1.24.0
+  lints: ^3.0.0

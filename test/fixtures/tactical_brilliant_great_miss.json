@@ -1,0 +1,4350 @@
+{
+  "name": "Tactical French Greek Gift Sacrifice (Fixture 3)",
+  "description": "36-ply tactical game featuring Brilliant (11. Bxh7+!), Great (12. Ng5+!), and Miss (15... Nc4?! after 15. h4?!).",
+  "engine": {
+    "idName": "Stockfish 19 WASM Multithreaded",
+    "build": "stockfish 19.0.1 WASM Multithreaded (Node fixture runner)",
+    "net": "nn-1a298aa575a0.nnue"
+  },
+  "config": {
+    "nodes": 500000,
+    "threads": 1,
+    "hashMb": 16
+  },
+  "initialFen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  "movesUci": [
+    "e2e4",
+    "e7e6",
+    "d2d4",
+    "d7d5",
+    "b1c3",
+    "g8f6",
+    "c1g5",
+    "f8e7",
+    "e4e5",
+    "f6d7",
+    "g5e7",
+    "d8e7",
+    "f2f4",
+    "e8g8",
+    "g1f3",
+    "c7c5",
+    "d4c5",
+    "b8c6",
+    "f1d3",
+    "a7a6",
+    "d3h7",
+    "g8h7",
+    "f3g5",
+    "h7g6",
+    "d1d3",
+    "f7f5",
+    "d3g3",
+    "d7e5",
+    "h2h4",
+    "e5c4",
+    "g5e6",
+    "g6f7",
+    "e1c1",
+    "c8e6",
+    "h1e1",
+    "e7c5"
+  ],
+  "pliesMeta": [
+    {
+      "ply": 1,
+      "side": "White",
+      "san": "e4",
+      "uci": "e2e4",
+      "fenBefore": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "fenAfter": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 2,
+      "side": "Black",
+      "san": "e6",
+      "uci": "e7e6",
+      "fenBefore": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+      "fenAfter": "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 3,
+      "side": "White",
+      "san": "d4",
+      "uci": "d2d4",
+      "fenBefore": "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "fenAfter": "rnbqkbnr/pppp1ppp/4p3/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 4,
+      "side": "Black",
+      "san": "d5",
+      "uci": "d7d5",
+      "fenBefore": "rnbqkbnr/pppp1ppp/4p3/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2",
+      "fenAfter": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 5,
+      "side": "White",
+      "san": "Nc3",
+      "uci": "b1c3",
+      "fenBefore": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+      "fenAfter": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR b KQkq - 1 3",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 6,
+      "side": "Black",
+      "san": "Nf6",
+      "uci": "g8f6",
+      "fenBefore": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR b KQkq - 1 3",
+      "fenAfter": "rnbqkb1r/ppp2ppp/4pn2/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 7,
+      "side": "White",
+      "san": "Bg5",
+      "uci": "c1g5",
+      "fenBefore": "rnbqkb1r/ppp2ppp/4pn2/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
+      "fenAfter": "rnbqkb1r/ppp2ppp/4pn2/3p2B1/3PP3/2N5/PPP2PPP/R2QKBNR b KQkq - 3 4",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 8,
+      "side": "Black",
+      "san": "Be7",
+      "uci": "f8e7",
+      "fenBefore": "rnbqkb1r/ppp2ppp/4pn2/3p2B1/3PP3/2N5/PPP2PPP/R2QKBNR b KQkq - 3 4",
+      "fenAfter": "rnbqk2r/ppp1bppp/4pn2/3p2B1/3PP3/2N5/PPP2PPP/R2QKBNR w KQkq - 4 5",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 9,
+      "side": "White",
+      "san": "e5",
+      "uci": "e4e5",
+      "fenBefore": "rnbqk2r/ppp1bppp/4pn2/3p2B1/3PP3/2N5/PPP2PPP/R2QKBNR w KQkq - 4 5",
+      "fenAfter": "rnbqk2r/ppp1bppp/4pn2/3pP1B1/3P4/2N5/PPP2PPP/R2QKBNR b KQkq - 0 5",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 10,
+      "side": "Black",
+      "san": "Nfd7",
+      "uci": "f6d7",
+      "fenBefore": "rnbqk2r/ppp1bppp/4pn2/3pP1B1/3P4/2N5/PPP2PPP/R2QKBNR b KQkq - 0 5",
+      "fenAfter": "rnbqk2r/pppnbppp/4p3/3pP1B1/3P4/2N5/PPP2PPP/R2QKBNR w KQkq - 1 6",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 11,
+      "side": "White",
+      "san": "Bxe7",
+      "uci": "g5e7",
+      "fenBefore": "rnbqk2r/pppnbppp/4p3/3pP1B1/3P4/2N5/PPP2PPP/R2QKBNR w KQkq - 1 6",
+      "fenAfter": "rnbqk2r/pppnBppp/4p3/3pP3/3P4/2N5/PPP2PPP/R2QKBNR b KQkq - 0 6",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 12,
+      "side": "Black",
+      "san": "Qxe7",
+      "uci": "d8e7",
+      "fenBefore": "rnbqk2r/pppnBppp/4p3/3pP3/3P4/2N5/PPP2PPP/R2QKBNR b KQkq - 0 6",
+      "fenAfter": "rnb1k2r/pppnqppp/4p3/3pP3/3P4/2N5/PPP2PPP/R2QKBNR w KQkq - 0 7",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 13,
+      "side": "White",
+      "san": "f4",
+      "uci": "f2f4",
+      "fenBefore": "rnb1k2r/pppnqppp/4p3/3pP3/3P4/2N5/PPP2PPP/R2QKBNR w KQkq - 0 7",
+      "fenAfter": "rnb1k2r/pppnqppp/4p3/3pP3/3P1P2/2N5/PPP3PP/R2QKBNR b KQkq - 0 7",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 14,
+      "side": "Black",
+      "san": "O-O",
+      "uci": "e8g8",
+      "fenBefore": "rnb1k2r/pppnqppp/4p3/3pP3/3P1P2/2N5/PPP3PP/R2QKBNR b KQkq - 0 7",
+      "fenAfter": "rnb2rk1/pppnqppp/4p3/3pP3/3P1P2/2N5/PPP3PP/R2QKBNR w KQ - 1 8",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 15,
+      "side": "White",
+      "san": "Nf3",
+      "uci": "g1f3",
+      "fenBefore": "rnb2rk1/pppnqppp/4p3/3pP3/3P1P2/2N5/PPP3PP/R2QKBNR w KQ - 1 8",
+      "fenAfter": "rnb2rk1/pppnqppp/4p3/3pP3/3P1P2/2N2N2/PPP3PP/R2QKB1R b KQ - 2 8",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 16,
+      "side": "Black",
+      "san": "c5",
+      "uci": "c7c5",
+      "fenBefore": "rnb2rk1/pppnqppp/4p3/3pP3/3P1P2/2N2N2/PPP3PP/R2QKB1R b KQ - 2 8",
+      "fenAfter": "rnb2rk1/pp1nqppp/4p3/2ppP3/3P1P2/2N2N2/PPP3PP/R2QKB1R w KQ - 0 9",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 17,
+      "side": "White",
+      "san": "dxc5",
+      "uci": "d4c5",
+      "fenBefore": "rnb2rk1/pp1nqppp/4p3/2ppP3/3P1P2/2N2N2/PPP3PP/R2QKB1R w KQ - 0 9",
+      "fenAfter": "rnb2rk1/pp1nqppp/4p3/2PpP3/5P2/2N2N2/PPP3PP/R2QKB1R b KQ - 0 9",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 18,
+      "side": "Black",
+      "san": "Nc6",
+      "uci": "b8c6",
+      "fenBefore": "rnb2rk1/pp1nqppp/4p3/2PpP3/5P2/2N2N2/PPP3PP/R2QKB1R b KQ - 0 9",
+      "fenAfter": "r1b2rk1/pp1nqppp/2n1p3/2PpP3/5P2/2N2N2/PPP3PP/R2QKB1R w KQ - 1 10",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 19,
+      "side": "White",
+      "san": "Bd3",
+      "uci": "f1d3",
+      "fenBefore": "r1b2rk1/pp1nqppp/2n1p3/2PpP3/5P2/2N2N2/PPP3PP/R2QKB1R w KQ - 1 10",
+      "fenAfter": "r1b2rk1/pp1nqppp/2n1p3/2PpP3/5P2/2NB1N2/PPP3PP/R2QK2R b KQ - 2 10",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 20,
+      "side": "Black",
+      "san": "a6",
+      "uci": "a7a6",
+      "fenBefore": "r1b2rk1/pp1nqppp/2n1p3/2PpP3/5P2/2NB1N2/PPP3PP/R2QK2R b KQ - 2 10",
+      "fenAfter": "r1b2rk1/1p1nqppp/p1n1p3/2PpP3/5P2/2NB1N2/PPP3PP/R2QK2R w KQ - 0 11",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 21,
+      "side": "White",
+      "san": "Bxh7+",
+      "uci": "d3h7",
+      "fenBefore": "r1b2rk1/1p1nqppp/p1n1p3/2PpP3/5P2/2NB1N2/PPP3PP/R2QK2R w KQ - 0 11",
+      "fenAfter": "r1b2rk1/1p1nqppB/p1n1p3/2PpP3/5P2/2N2N2/PPP3PP/R2QK2R b KQ - 0 11",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 22,
+      "side": "Black",
+      "san": "Kxh7",
+      "uci": "g8h7",
+      "fenBefore": "r1b2rk1/1p1nqppB/p1n1p3/2PpP3/5P2/2N2N2/PPP3PP/R2QK2R b KQ - 0 11",
+      "fenAfter": "r1b2r2/1p1nqppk/p1n1p3/2PpP3/5P2/2N2N2/PPP3PP/R2QK2R w KQ - 0 12",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 23,
+      "side": "White",
+      "san": "Ng5+",
+      "uci": "f3g5",
+      "fenBefore": "r1b2r2/1p1nqppk/p1n1p3/2PpP3/5P2/2N2N2/PPP3PP/R2QK2R w KQ - 0 12",
+      "fenAfter": "r1b2r2/1p1nqppk/p1n1p3/2PpP1N1/5P2/2N5/PPP3PP/R2QK2R b KQ - 1 12",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 24,
+      "side": "Black",
+      "san": "Kg6",
+      "uci": "h7g6",
+      "fenBefore": "r1b2r2/1p1nqppk/p1n1p3/2PpP1N1/5P2/2N5/PPP3PP/R2QK2R b KQ - 1 12",
+      "fenAfter": "r1b2r2/1p1nqpp1/p1n1p1k1/2PpP1N1/5P2/2N5/PPP3PP/R2QK2R w KQ - 2 13",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 25,
+      "side": "White",
+      "san": "Qd3+",
+      "uci": "d1d3",
+      "fenBefore": "r1b2r2/1p1nqpp1/p1n1p1k1/2PpP1N1/5P2/2N5/PPP3PP/R2QK2R w KQ - 2 13",
+      "fenAfter": "r1b2r2/1p1nqpp1/p1n1p1k1/2PpP1N1/5P2/2NQ4/PPP3PP/R3K2R b KQ - 3 13",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 26,
+      "side": "Black",
+      "san": "f5",
+      "uci": "f7f5",
+      "fenBefore": "r1b2r2/1p1nqpp1/p1n1p1k1/2PpP1N1/5P2/2NQ4/PPP3PP/R3K2R b KQ - 3 13",
+      "fenAfter": "r1b2r2/1p1nq1p1/p1n1p1k1/2PpPpN1/5P2/2NQ4/PPP3PP/R3K2R w KQ f6 0 14",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 27,
+      "side": "White",
+      "san": "Qg3",
+      "uci": "d3g3",
+      "fenBefore": "r1b2r2/1p1nq1p1/p1n1p1k1/2PpPpN1/5P2/2NQ4/PPP3PP/R3K2R w KQ f6 0 14",
+      "fenAfter": "r1b2r2/1p1nq1p1/p1n1p1k1/2PpPpN1/5P2/2N3Q1/PPP3PP/R3K2R b KQ - 1 14",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 28,
+      "side": "Black",
+      "san": "Ndxe5",
+      "uci": "d7e5",
+      "fenBefore": "r1b2r2/1p1nq1p1/p1n1p1k1/2PpPpN1/5P2/2N3Q1/PPP3PP/R3K2R b KQ - 1 14",
+      "fenAfter": "r1b2r2/1p2q1p1/p1n1p1k1/2PpnpN1/5P2/2N3Q1/PPP3PP/R3K2R w KQ - 0 15",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 29,
+      "side": "White",
+      "san": "h4",
+      "uci": "h2h4",
+      "fenBefore": "r1b2r2/1p2q1p1/p1n1p1k1/2PpnpN1/5P2/2N3Q1/PPP3PP/R3K2R w KQ - 0 15",
+      "fenAfter": "r1b2r2/1p2q1p1/p1n1p1k1/2PpnpN1/5P1P/2N3Q1/PPP3P1/R3K2R b KQ - 0 15",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 30,
+      "side": "Black",
+      "san": "Nc4",
+      "uci": "e5c4",
+      "fenBefore": "r1b2r2/1p2q1p1/p1n1p1k1/2PpnpN1/5P1P/2N3Q1/PPP3P1/R3K2R b KQ - 0 15",
+      "fenAfter": "r1b2r2/1p2q1p1/p1n1p1k1/2Pp1pN1/2n2P1P/2N3Q1/PPP3P1/R3K2R w KQ - 1 16",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 31,
+      "side": "White",
+      "san": "Nxe6+",
+      "uci": "g5e6",
+      "fenBefore": "r1b2r2/1p2q1p1/p1n1p1k1/2Pp1pN1/2n2P1P/2N3Q1/PPP3P1/R3K2R w KQ - 1 16",
+      "fenAfter": "r1b2r2/1p2q1p1/p1n1N1k1/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/R3K2R b KQ - 0 16",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 32,
+      "side": "Black",
+      "san": "Kf7",
+      "uci": "g6f7",
+      "fenBefore": "r1b2r2/1p2q1p1/p1n1N1k1/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/R3K2R b KQ - 0 16",
+      "fenAfter": "r1b2r2/1p2qkp1/p1n1N3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/R3K2R w KQ - 1 17",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 33,
+      "side": "White",
+      "san": "O-O-O",
+      "uci": "e1c1",
+      "fenBefore": "r1b2r2/1p2qkp1/p1n1N3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/R3K2R w KQ - 1 17",
+      "fenAfter": "r1b2r2/1p2qkp1/p1n1N3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/2KR3R b - - 2 17",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 34,
+      "side": "Black",
+      "san": "Bxe6",
+      "uci": "c8e6",
+      "fenBefore": "r1b2r2/1p2qkp1/p1n1N3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/2KR3R b - - 2 17",
+      "fenAfter": "r4r2/1p2qkp1/p1n1b3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/2KR3R w - - 0 18",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 35,
+      "side": "White",
+      "san": "Rhe1",
+      "uci": "h1e1",
+      "fenBefore": "r4r2/1p2qkp1/p1n1b3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/2KR3R w - - 0 18",
+      "fenAfter": "r4r2/1p2qkp1/p1n1b3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/2KRR3 b - - 1 18",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    },
+    {
+      "ply": 36,
+      "side": "Black",
+      "san": "Qxc5",
+      "uci": "e7c5",
+      "fenBefore": "r4r2/1p2qkp1/p1n1b3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/2KRR3 b - - 1 18",
+      "fenAfter": "r4r2/1p3kp1/p1n1b3/2qp1p2/2n2P1P/2N3Q1/PPP3P1/2KRR3 w - - 0 19",
+      "isForced": false,
+      "isCheckmateAfter": false,
+      "isDrawAfter": false,
+      "isTerminalAfter": false
+    }
+  ],
+  "positions": {
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1": {
+      "multiPv1": {
+        "nodes": 381392,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 34,
+            "mate": null,
+            "winPercent": 53.1256867324871,
+            "moveUci": "e2e4",
+            "pv": [
+              "e2e4",
+              "c7c5",
+              "g1f3",
+              "d7d6",
+              "d2d4",
+              "c5d4",
+              "f3d4",
+              "g8f6",
+              "b1c3",
+              "a7a6",
+              "c1e3",
+              "e7e5",
+              "d4b3",
+              "f6g4",
+              "e3c1",
+              "f8e7",
+              "f1c4",
+              "e8g8",
+              "c3d5",
+              "e7h4"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500505,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 31,
+            "mate": null,
+            "winPercent": 52.85051773118131,
+            "moveUci": "e2e4",
+            "pv": [
+              "e2e4",
+              "c7c5",
+              "g1f3",
+              "d7d6",
+              "d2d4",
+              "g8f6",
+              "b1c3",
+              "c5d4",
+              "f3d4",
+              "a7a6",
+              "c1e3",
+              "e7e5",
+              "d4b3",
+              "c8e6",
+              "f2f3",
+              "h7h5",
+              "c3d5",
+              "e6d5",
+              "e4d5",
+              "g7g6",
+              "d1d2",
+              "f8g7",
+              "e1c1",
+              "d8c7"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 25,
+            "mate": null,
+            "winPercent": 52.29967635676993,
+            "moveUci": "d2d4",
+            "pv": [
+              "d2d4",
+              "d7d5",
+              "c2c4",
+              "e7e6",
+              "b1c3",
+              "g8f6",
+              "g1f3",
+              "c7c6",
+              "c1g5",
+              "h7h6",
+              "g5h4",
+              "d5c4",
+              "e2e4",
+              "g7g5",
+              "h4g3",
+              "b7b5",
+              "f1e2",
+              "b5b4",
+              "c3a4",
+              "f6e4",
+              "f3e5",
+              "e4g3",
+              "f2g3"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1": {
+      "multiPv1": {
+        "nodes": 500346,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -30,
+            "mate": null,
+            "winPercent": 47.24124461074959,
+            "moveUci": "c7c5",
+            "pv": [
+              "c7c5",
+              "g1f3",
+              "d7d6",
+              "d2d4",
+              "g8f6",
+              "b1c3",
+              "c5d4",
+              "f3d4",
+              "a7a6",
+              "c1e3",
+              "e7e5",
+              "d4b3",
+              "f8e7",
+              "f2f3",
+              "c8e6",
+              "d1d2",
+              "h7h5",
+              "c3d5",
+              "f6d5",
+              "e4d5",
+              "e6f5",
+              "b3a5",
+              "b8d7"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500241,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -26,
+            "mate": null,
+            "winPercent": 47.60847425165294,
+            "moveUci": "c7c5",
+            "pv": [
+              "c7c5",
+              "g1f3",
+              "d7d6",
+              "d2d4",
+              "c5d4",
+              "f3d4",
+              "g8f6",
+              "b1c3",
+              "a7a6",
+              "c1e3",
+              "e7e5",
+              "d4b3",
+              "c8e6",
+              "d1d2",
+              "f8e7",
+              "f2f3",
+              "h7h5",
+              "e1c1",
+              "b8d7",
+              "c1b1",
+              "d8c7",
+              "d1c1",
+              "d7b6",
+              "d2f2",
+              "b6c4",
+              "f1c4",
+              "c7c4",
+              "b3a5"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -29,
+            "mate": null,
+            "winPercent": 47.33302559691369,
+            "moveUci": "e7e6",
+            "pv": [
+              "e7e6",
+              "d2d4",
+              "d7d5",
+              "e4e5",
+              "c7c5",
+              "c2c3",
+              "b8c6",
+              "g1f3",
+              "c8d7",
+              "f1e2",
+              "g8h6",
+              "e1g1",
+              "h6f5",
+              "e2d3",
+              "c5d4",
+              "d3f5",
+              "e6f5",
+              "c3d4",
+              "f8e7",
+              "b1c3",
+              "d7e6",
+              "c1e3"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2": {
+      "multiPv1": {
+        "nodes": 348125,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 28,
+            "mate": null,
+            "winPercent": 52.57517538936253,
+            "moveUci": "d2d4",
+            "pv": [
+              "d2d4",
+              "d7d5",
+              "e4e5",
+              "c7c5",
+              "c2c3",
+              "b8c6",
+              "g1f3",
+              "c8d7",
+              "a2a3",
+              "g8h6",
+              "f1d3",
+              "h6f5",
+              "e1g1",
+              "c5d4",
+              "d3f5",
+              "e6f5",
+              "c3d4",
+              "f8e7"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500226,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 30,
+            "mate": null,
+            "winPercent": 52.75875538925041,
+            "moveUci": "b1c3",
+            "pv": [
+              "b1c3",
+              "d7d5",
+              "d2d4",
+              "g8f6",
+              "e4e5",
+              "f6d7",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "c1e3",
+              "d8b6",
+              "a2a3",
+              "c5d4",
+              "f3d4",
+              "f8c5",
+              "c3a4"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 25,
+            "mate": null,
+            "winPercent": 52.29967635676993,
+            "moveUci": "d2d4",
+            "pv": [
+              "d2d4",
+              "d7d5",
+              "b1c3",
+              "g8f6",
+              "e4e5",
+              "f6d7",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "c1e3",
+              "c5d4",
+              "f3d4",
+              "d8b6",
+              "a2a3",
+              "f8c5",
+              "c3b5",
+              "c6d4",
+              "e3d4",
+              "e8g8",
+              "b2b4",
+              "c5d4",
+              "d1d4"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqkbnr/pppp1ppp/4p3/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2": {
+      "multiPv1": {
+        "nodes": 500352,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -36,
+            "mate": null,
+            "winPercent": 46.69097177008696,
+            "moveUci": "d7d5",
+            "pv": [
+              "d7d5",
+              "b1c3",
+              "g8f6",
+              "e4e5",
+              "f6d7",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "c1e3",
+              "a7a6",
+              "d1d2",
+              "b7b5",
+              "f1d3",
+              "b5b4",
+              "c3a4",
+              "c5c4",
+              "d3e2",
+              "d7b6",
+              "a4c5",
+              "b6d7",
+              "c5d7",
+              "c8d7",
+              "h2h4",
+              "a8c8",
+              "e1g1",
+              "f7f5",
+              "h4h5"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500692,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -35,
+            "mate": null,
+            "winPercent": 46.7826316589383,
+            "moveUci": "d7d5",
+            "pv": [
+              "d7d5",
+              "b1c3",
+              "g8f6",
+              "e4e5",
+              "f6d7",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "c1e3",
+              "a7a6",
+              "d1d2",
+              "b7b5",
+              "f1d3",
+              "b5b4",
+              "c3a4",
+              "c5c4",
+              "d3e2",
+              "d7b6",
+              "a4b6"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -60,
+            "mate": null,
+            "winPercent": 44.49923515875464,
+            "moveUci": "a7a6",
+            "pv": [
+              "a7a6",
+              "b1c3",
+              "d7d5",
+              "f1d3",
+              "c7c5",
+              "d4c5",
+              "f8c5",
+              "e4d5",
+              "e6d5",
+              "c3d5",
+              "b8c6",
+              "d5e3",
+              "g8f6",
+              "g1f3",
+              "e8g8",
+              "e1g1",
+              "f8e8"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3": {
+      "multiPv1": {
+        "nodes": 417945,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 38,
+            "mate": null,
+            "winPercent": 53.49228039541688,
+            "moveUci": "b1c3",
+            "pv": [
+              "b1c3",
+              "g8f6",
+              "e4e5",
+              "f6d7",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "c1e3",
+              "a7a6",
+              "d1d2",
+              "f8e7",
+              "d4c5",
+              "d7c5",
+              "h2h4",
+              "d8a5",
+              "a2a3",
+              "b7b5",
+              "f3d4",
+              "a5c7",
+              "b2b4",
+              "c5e4",
+              "c3e4",
+              "d5e4",
+              "d2c3"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500518,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 43,
+            "mate": null,
+            "winPercent": 53.94998785122574,
+            "moveUci": "b1c3",
+            "pv": [
+              "b1c3",
+              "g8f6",
+              "e4e5",
+              "f6d7",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "c1e3",
+              "a7a6",
+              "d1d2",
+              "b7b5",
+              "h2h4",
+              "f8e7",
+              "h4h5",
+              "d8c7",
+              "a2a3",
+              "e8g8",
+              "d4c5",
+              "d7c5",
+              "d2f2",
+              "c5d7",
+              "f1d3"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 29,
+            "mate": null,
+            "winPercent": 52.66697440308632,
+            "moveUci": "e4e5",
+            "pv": [
+              "e4e5",
+              "c7c5",
+              "c2c3",
+              "b8c6",
+              "g1f3",
+              "c8d7",
+              "f1e2",
+              "g8e7",
+              "e1g1",
+              "e7g6",
+              "c1e3",
+              "f8e7",
+              "g2g3",
+              "e8g8",
+              "b1d2",
+              "f7f6",
+              "e5f6",
+              "e7f6",
+              "f1e1",
+              "c5d4",
+              "c3d4",
+              "e6e5",
+              "d4e5",
+              "g6e5"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR b KQkq - 1 3": {
+      "multiPv1": {
+        "nodes": 500285,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -42,
+            "mate": null,
+            "winPercent": 46.14150285897469,
+            "moveUci": "g8f6",
+            "pv": [
+              "g8f6",
+              "e4e5",
+              "f6d7",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "c1e3",
+              "a7a6",
+              "d1d2",
+              "f8e7",
+              "d4c5",
+              "e7c5",
+              "e3c5",
+              "d7c5",
+              "a2a3",
+              "e8g8",
+              "b2b4",
+              "c5d7",
+              "f1d3",
+              "f7f6",
+              "e5f6",
+              "d7f6",
+              "e1g1",
+              "d8d6"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500092,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -47,
+            "mate": null,
+            "winPercent": 45.684321478024955,
+            "moveUci": "g8f6",
+            "pv": [
+              "g8f6",
+              "e4e5",
+              "f6d7",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "c1e3",
+              "a7a6",
+              "d1d2",
+              "f8e7",
+              "f1d3",
+              "f7f6",
+              "e5f6",
+              "e7f6",
+              "d3e2",
+              "c5d4"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -49,
+            "mate": null,
+            "winPercent": 45.501647940453175,
+            "moveUci": "d5e4",
+            "pv": [
+              "d5e4",
+              "c3e4",
+              "b8d7",
+              "g1f3",
+              "g8f6",
+              "e4f6",
+              "d7f6",
+              "c2c3",
+              "c7c5",
+              "c1e3",
+              "d8c7",
+              "f1b5",
+              "c8d7",
+              "b5d7",
+              "f6d7",
+              "d4d5",
+              "e6d5",
+              "d1d5",
+              "d7f6",
+              "d5b3",
+              "f8d6",
+              "b3a4",
+              "c7d7"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqkb1r/ppp2ppp/4pn2/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4": {
+      "multiPv1": {
+        "nodes": 500061,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 42,
+            "mate": null,
+            "winPercent": 53.85849714102531,
+            "moveUci": "e4e5",
+            "pv": [
+              "e4e5",
+              "f6d7",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "c1e3",
+              "a7a6",
+              "d1d2",
+              "b7b5",
+              "h2h4",
+              "c8b7",
+              "a2a3"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500207,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 41,
+            "mate": null,
+            "winPercent": 53.76698043044984,
+            "moveUci": "e4e5",
+            "pv": [
+              "e4e5",
+              "f6d7",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "c1e3",
+              "a7a6",
+              "d1d2",
+              "b7b5",
+              "h2h4",
+              "f8e7",
+              "h4h5",
+              "c8b7",
+              "h5h6",
+              "g7g6",
+              "c3d1",
+              "f7f6",
+              "c2c3",
+              "c5d4",
+              "c3d4",
+              "e8g8",
+              "f1d3",
+              "e7b4",
+              "d1c3",
+              "f6e5",
+              "f4e5",
+              "d7e5",
+              "f3e5"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 32,
+            "mate": null,
+            "winPercent": 52.94226081270875,
+            "moveUci": "c1g5",
+            "pv": [
+              "c1g5",
+              "d5e4",
+              "c3e4",
+              "b8d7",
+              "e4f6",
+              "d7f6",
+              "g1f3",
+              "h7h6",
+              "g5e3",
+              "f8d6",
+              "f1d3",
+              "b7b6",
+              "f3e5",
+              "e8g8",
+              "d1f3",
+              "f6d5",
+              "e3d2",
+              "d8h4",
+              "d3e4",
+              "c8b7",
+              "g2g3",
+              "h4e7",
+              "c2c4",
+              "f7f5",
+              "e5g6"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqkb1r/ppp2ppp/4pn2/3p2B1/3PP3/2N5/PPP2PPP/R2QKBNR b KQkq - 3 4": {
+      "multiPv1": {
+        "nodes": 307949,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -31,
+            "mate": null,
+            "winPercent": 47.14948226881868,
+            "moveUci": "d5e4",
+            "pv": [
+              "d5e4",
+              "c3e4",
+              "b8d7",
+              "g1f3",
+              "h7h6",
+              "e4f6",
+              "d7f6",
+              "g5e3",
+              "f8d6",
+              "f1d3",
+              "b7b6",
+              "d1e2",
+              "c8b7",
+              "e1c1",
+              "e8g8",
+              "h1g1",
+              "f6d5",
+              "g2g4",
+              "d5f4",
+              "e3f4",
+              "d6f4",
+              "c1b1",
+              "g7g6",
+              "d3e4",
+              "b7e4",
+              "e2e4",
+              "d8f6",
+              "h2h4"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500569,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -23,
+            "mate": null,
+            "winPercent": 47.884068475933795,
+            "moveUci": "d5e4",
+            "pv": [
+              "d5e4",
+              "c3e4",
+              "b8d7",
+              "g1f3",
+              "h7h6",
+              "e4f6",
+              "d7f6",
+              "g5h4",
+              "c7c5",
+              "f1b5",
+              "c8d7",
+              "b5d7",
+              "d8d7",
+              "d1e2",
+              "f8e7",
+              "e1c1",
+              "d7a4",
+              "c1b1",
+              "e8g8",
+              "d4c5",
+              "e7c5",
+              "h4f6",
+              "g7f6",
+              "d1d3"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -34,
+            "mate": null,
+            "winPercent": 46.8743132675129,
+            "moveUci": "h7h6",
+            "pv": [
+              "h7h6",
+              "g5f6",
+              "d8f6",
+              "a2a3",
+              "f6e7",
+              "d1d2",
+              "d5e4",
+              "c3e4",
+              "g7g6",
+              "e1c1",
+              "f8g7",
+              "f2f4",
+              "b7b6",
+              "g1f3",
+              "e8g8",
+              "h2h4",
+              "c8b7",
+              "f1d3",
+              "b8d7"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqk2r/ppp1bppp/4pn2/3p2B1/3PP3/2N5/PPP2PPP/R2QKBNR w KQkq - 4 5": {
+      "multiPv1": {
+        "nodes": 500188,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 55,
+            "mate": null,
+            "winPercent": 55.04562746820834,
+            "moveUci": "e4e5",
+            "pv": [
+              "e4e5",
+              "f6e4",
+              "c3e4",
+              "d5e4",
+              "h2h4",
+              "e7g5",
+              "h4g5",
+              "d8g5",
+              "g1h3",
+              "g5e7",
+              "c2c3",
+              "c7c5",
+              "d1g4",
+              "c5d4",
+              "g4g7",
+              "h8f8",
+              "e1c1",
+              "d4c3"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500061,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 57,
+            "mate": null,
+            "winPercent": 55.227788165771415,
+            "moveUci": "e4e5",
+            "pv": [
+              "e4e5",
+              "f6d7",
+              "h2h4",
+              "h7h6",
+              "g5e7",
+              "d8e7",
+              "f2f4",
+              "a7a6",
+              "d1d2",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "h4h5",
+              "b7b5"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -6,
+            "mate": null,
+            "winPercent": 49.44771046316658,
+            "moveUci": "e4d5",
+            "pv": [
+              "e4d5",
+              "e6d5",
+              "g1f3",
+              "e8g8",
+              "f1d3",
+              "h7h6",
+              "g5e3",
+              "b8c6",
+              "e1g1",
+              "f8e8",
+              "f1e1",
+              "e7d6",
+              "c3b5"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqk2r/ppp1bppp/4pn2/3pP1B1/3P4/2N5/PPP2PPP/R2QKBNR b KQkq - 0 5": {
+      "multiPv1": {
+        "nodes": 461577,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -50,
+            "mate": null,
+            "winPercent": 45.4103562397001,
+            "moveUci": "f6e4",
+            "pv": [
+              "f6e4",
+              "g5e7",
+              "d8e7",
+              "c3e4",
+              "d5e4",
+              "d1e2",
+              "b7b6",
+              "e1c1",
+              "c8b7",
+              "g2g3",
+              "b8c6",
+              "f1g2",
+              "e8c8",
+              "c2c3",
+              "e7g5",
+              "c1b1",
+              "c6e5",
+              "d4e5",
+              "d8d1",
+              "e2d1"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500402,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -48,
+            "mate": null,
+            "winPercent": 45.59296988800415,
+            "moveUci": "f6d7",
+            "pv": [
+              "f6d7",
+              "h2h4",
+              "e7g5",
+              "h4g5",
+              "d8g5",
+              "g1h3",
+              "g5h4",
+              "g2g3",
+              "h4e7",
+              "d1g4",
+              "g7g6",
+              "e1c1",
+              "h7h6",
+              "h3f4",
+              "b8c6",
+              "f1b5",
+              "a7a6",
+              "b5c6",
+              "b7c6",
+              "f4d3"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -50,
+            "mate": null,
+            "winPercent": 45.4103562397001,
+            "moveUci": "f6e4",
+            "pv": [
+              "f6e4",
+              "c3e4",
+              "d5e4",
+              "g5e7",
+              "d8e7",
+              "d1e2",
+              "b7b6",
+              "e1c1",
+              "c8b7",
+              "g2g3",
+              "c7c5",
+              "f1g2",
+              "b8c6",
+              "d4c5",
+              "e8g8",
+              "g2e4",
+              "c6e5",
+              "f2f4",
+              "b7e4",
+              "e2e4",
+              "e5g4",
+              "e4f3",
+              "h7h5",
+              "h2h3",
+              "g4f6",
+              "c5c6"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqk2r/pppnbppp/4p3/3pP1B1/3P4/2N5/PPP2PPP/R2QKBNR w KQkq - 1 6": {
+      "multiPv1": {
+        "nodes": 312562,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 42,
+            "mate": null,
+            "winPercent": 53.85849714102531,
+            "moveUci": "h2h4",
+            "pv": [
+              "h2h4",
+              "e7g5",
+              "h4g5",
+              "d8g5",
+              "g1h3",
+              "g5h4",
+              "c3b5",
+              "e8d8",
+              "d1f3",
+              "a7a6",
+              "f3f7",
+              "h8f8",
+              "f7g7",
+              "a6b5",
+              "g7g5",
+              "h4g5",
+              "h3g5",
+              "d7b6",
+              "f1b5",
+              "c7c6",
+              "b5e2",
+              "c6c5",
+              "d4c5",
+              "b6a4",
+              "g5h7",
+              "f8f7",
+              "h7f6",
+              "b8d7"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500087,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 43,
+            "mate": null,
+            "winPercent": 53.94998785122574,
+            "moveUci": "g5e7",
+            "pv": [
+              "g5e7",
+              "d8e7",
+              "f2f4",
+              "e8g8",
+              "g1f3",
+              "c7c5",
+              "c3b5",
+              "c5d4",
+              "b5c7",
+              "d7e5",
+              "c7a8",
+              "e5f3",
+              "d1f3",
+              "e7b4",
+              "e1f2",
+              "c8d7",
+              "a1d1",
+              "b4c5",
+              "f3d3",
+              "e6e5",
+              "f4e5",
+              "b8c6",
+              "a8c7",
+              "c6e5",
+              "d3d4",
+              "e5g4",
+              "f2g1",
+              "c5c7"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 42,
+            "mate": null,
+            "winPercent": 53.85849714102531,
+            "moveUci": "h2h4",
+            "pv": [
+              "h2h4",
+              "e7g5",
+              "h4g5",
+              "d8g5",
+              "g1h3",
+              "g5h4",
+              "g2g3",
+              "h4e7",
+              "d1g4",
+              "g7g6",
+              "h3g5",
+              "h7h6",
+              "f1d3",
+              "b8c6",
+              "e1c1",
+              "d7f8",
+              "h1h4",
+              "h6h5",
+              "g4f4",
+              "c8d7",
+              "d1h1",
+              "f8h7",
+              "h4h5",
+              "g6h5",
+              "g5h7",
+              "e8c8",
+              "a2a3"
+            ]
+          }
+        ]
+      }
+    },
+    "rnbqk2r/pppnBppp/4p3/3pP3/3P4/2N5/PPP2PPP/R2QKBNR b KQkq - 0 6": {
+      "multiPv1": {
+        "nodes": 500604,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -25,
+            "mate": null,
+            "winPercent": 47.700323643230064,
+            "moveUci": "d8e7",
+            "pv": [
+              "d8e7",
+              "f2f4",
+              "e8g8",
+              "g1f3",
+              "c7c5",
+              "d1d2",
+              "b8c6",
+              "e1c1",
+              "a7a6",
+              "g2g4",
+              "f7f6",
+              "e5f6",
+              "d7f6",
+              "h1g1",
+              "b7b5",
+              "d4c5",
+              "e7c5",
+              "f1d3",
+              "b5b4",
+              "c3a4",
+              "c5a5"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500506,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -23,
+            "mate": null,
+            "winPercent": 47.884068475933795,
+            "moveUci": "d8e7",
+            "pv": [
+              "d8e7",
+              "f2f4",
+              "e8g8",
+              "g1f3",
+              "c7c5",
+              "c3b5",
+              "c5d4",
+              "d1d4",
+              "b8c6",
+              "d4d2",
+              "a7a6",
+              "b5d4",
+              "f7f6",
+              "e5f6",
+              "e7f6",
+              "e1c1",
+              "c6d4",
+              "f3d4",
+              "d7c5",
+              "g2g3",
+              "c5e4",
+              "d2e3",
+              "e6e5",
+              "f4e5",
+              "f6e5",
+              "f1g2"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -123,
+            "mate": null,
+            "winPercent": 38.867247514924735,
+            "moveUci": "e8e7",
+            "pv": [
+              "e8e7",
+              "d1h5",
+              "g7g6",
+              "h5h6",
+              "a7a6",
+              "h2h4",
+              "d8f8",
+              "h6e3",
+              "e7e8",
+              "g1f3",
+              "h7h6",
+              "a2a3",
+              "c7c5",
+              "c3e2",
+              "b8c6",
+              "c2c3",
+              "b7b5",
+              "e2f4",
+              "c8b7"
+            ]
+          }
+        ]
+      }
+    },
+    "rnb1k2r/pppnqppp/4p3/3pP3/3P4/2N5/PPP2PPP/R2QKBNR w KQkq - 0 7": {
+      "multiPv1": {
+        "nodes": 272384,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 43,
+            "mate": null,
+            "winPercent": 53.94998785122574,
+            "moveUci": "f2f4",
+            "pv": [
+              "f2f4",
+              "a7a6",
+              "d1g4",
+              "e8g8",
+              "g1f3",
+              "c7c5",
+              "f1d3",
+              "f7f6",
+              "d3h7",
+              "g8h7"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500275,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 26,
+            "mate": null,
+            "winPercent": 52.39152574834706,
+            "moveUci": "d1d2",
+            "pv": [
+              "d1d2",
+              "e8g8",
+              "f2f4",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "e1c1",
+              "a7a6",
+              "h2h4",
+              "b7b5",
+              "h4h5",
+              "c5c4",
+              "f4f5",
+              "d7b6",
+              "h5h6",
+              "g7g6",
+              "f5f6",
+              "e7b7",
+              "d2g5",
+              "b5b4",
+              "c3e2",
+              "a6a5",
+              "e2f4",
+              "b4b3",
+              "c2b3",
+              "a5a4",
+              "f3h4",
+              "a4a3"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 25,
+            "mate": null,
+            "winPercent": 52.29967635676993,
+            "moveUci": "f2f4",
+            "pv": [
+              "f2f4",
+              "e8g8",
+              "d1d2",
+              "c7c5",
+              "g1f3",
+              "b8c6",
+              "e1c1",
+              "a7a6",
+              "h2h4",
+              "b7b5",
+              "h4h5",
+              "c5c4",
+              "f4f5",
+              "d7b6",
+              "h5h6",
+              "g7g6",
+              "f5f6",
+              "e7b7",
+              "c3e2"
+            ]
+          }
+        ]
+      }
+    },
+    "rnb1k2r/pppnqppp/4p3/3pP3/3P1P2/2N5/PPP3PP/R2QKBNR b KQkq - 0 7": {
+      "multiPv1": {
+        "nodes": 393725,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -31,
+            "mate": null,
+            "winPercent": 47.14948226881868,
+            "moveUci": "e8g8",
+            "pv": [
+              "e8g8",
+              "g1f3",
+              "c7c5",
+              "c3b5",
+              "c5d4",
+              "f1d3",
+              "f7f6",
+              "e5f6",
+              "d7f6",
+              "e1g1",
+              "f6e4",
+              "d1e2",
+              "f8f4",
+              "f3d4",
+              "f4f1",
+              "a1f1",
+              "b8c6",
+              "d3e4",
+              "d5e4",
+              "d4c6",
+              "b7c6",
+              "b5d4",
+              "c8d7",
+              "e2e4",
+              "e7c5"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500317,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -36,
+            "mate": null,
+            "winPercent": 46.69097177008696,
+            "moveUci": "e8g8",
+            "pv": [
+              "e8g8",
+              "g1f3",
+              "c7c5",
+              "c3b5",
+              "c5d4",
+              "f1d3",
+              "f7f6",
+              "e5f6",
+              "d7f6",
+              "e1g1",
+              "b8c6",
+              "d1e2",
+              "f6h5",
+              "g2g3",
+              "h5f4",
+              "g3f4",
+              "f8f4",
+              "f3d2",
+              "f4h4",
+              "e2g2"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -43,
+            "mate": null,
+            "winPercent": 46.05001214877426,
+            "moveUci": "a7a6",
+            "pv": [
+              "a7a6",
+              "d1g4",
+              "e8g8",
+              "g1f3",
+              "c7c5",
+              "f1d3",
+              "f7f6",
+              "g4h4",
+              "h7h6",
+              "h4g3",
+              "c5d4",
+              "g3g6",
+              "f6f5",
+              "c3e2",
+              "d7c5"
+            ]
+          }
+        ]
+      }
+    },
+    "rnb2rk1/pppnqppp/4p3/3pP3/3P1P2/2N5/PPP3PP/R2QKBNR w KQ - 1 8": {
+      "multiPv1": {
+        "nodes": 224681,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 29,
+            "mate": null,
+            "winPercent": 52.66697440308632,
+            "moveUci": "g1f3",
+            "pv": [
+              "g1f3",
+              "c7c5",
+              "d1d2",
+              "b8c6",
+              "e1c1",
+              "a7a6",
+              "h2h4",
+              "b7b5",
+              "h4h5",
+              "c5c4",
+              "f4f5",
+              "b5b4",
+              "c3a4",
+              "e6f5",
+              "b2b3",
+              "c4b3",
+              "a2b3",
+              "a8b8",
+              "d1e1",
+              "d7b6",
+              "h5h6",
+              "g7g6"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500447,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 39,
+            "mate": null,
+            "winPercent": 53.58387144707508,
+            "moveUci": "g1f3",
+            "pv": [
+              "g1f3",
+              "c7c5",
+              "c3b5",
+              "c5d4",
+              "d1d2",
+              "b8c6",
+              "e1c1",
+              "f7f6",
+              "e5f6",
+              "d7f6",
+              "b5d4",
+              "f6e4",
+              "d2e3",
+              "e7c7",
+              "g2g3",
+              "e6e5",
+              "d4c6",
+              "e5f4",
+              "c6e7",
+              "c7e7",
+              "g3f4",
+              "e7f7"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 29,
+            "mate": null,
+            "winPercent": 52.66697440308632,
+            "moveUci": "d1d2",
+            "pv": [
+              "d1d2",
+              "c7c5",
+              "g1f3",
+              "a7a6",
+              "c3e2",
+              "b8c6",
+              "c2c3",
+              "d7b6",
+              "b2b3",
+              "a6a5",
+              "a2a4",
+              "f7f6",
+              "e2g3",
+              "c5d4",
+              "c3d4",
+              "e7b4",
+              "f1b5",
+              "b4b3",
+              "e1g1",
+              "b6c4",
+              "b5c4",
+              "b3c4",
+              "e5f6",
+              "f8f6"
+            ]
+          }
+        ]
+      }
+    },
+    "rnb2rk1/pppnqppp/4p3/3pP3/3P1P2/2N2N2/PPP3PP/R2QKB1R b KQ - 2 8": {
+      "multiPv1": {
+        "nodes": 319851,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -44,
+            "mate": null,
+            "winPercent": 45.958548047804854,
+            "moveUci": "c7c5",
+            "pv": [
+              "c7c5",
+              "c3b5",
+              "c5d4",
+              "d1d2",
+              "b8c6",
+              "e1c1",
+              "f7f6",
+              "e5f6",
+              "d7f6",
+              "b5d4",
+              "f6e4",
+              "d2e3",
+              "e7c7",
+              "g2g3",
+              "e6e5",
+              "d4c6",
+              "e5f4",
+              "c6e7",
+              "c7e7",
+              "g3f4",
+              "c8e6",
+              "f3g5",
+              "e4g5",
+              "f4g5",
+              "a8e8",
+              "d1e1",
+              "e7c7",
+              "f1d3",
+              "e6f5",
+              "e3e8",
+              "f8e8",
+              "e1e8",
+              "g8f7",
+              "e8e3"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500188,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -44,
+            "mate": null,
+            "winPercent": 45.958548047804854,
+            "moveUci": "c7c5",
+            "pv": [
+              "c7c5",
+              "c3b5",
+              "c5d4",
+              "d1d2",
+              "b8c6",
+              "e1c1",
+              "f7f6",
+              "e5f6",
+              "d7f6",
+              "b5d4",
+              "f6e4",
+              "d2e3",
+              "e7c7",
+              "g2g3",
+              "e6e5",
+              "f4e5",
+              "c8g4",
+              "f1c4",
+              "d5c4",
+              "e3e4",
+              "c6d4",
+              "f3g5",
+              "g4f5",
+              "e4d4"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -72,
+            "mate": null,
+            "winPercent": 43.410803346015385,
+            "moveUci": "f7f6",
+            "pv": [
+              "f7f6",
+              "e5f6",
+              "d7f6",
+              "d1e2",
+              "c7c5",
+              "d4c5",
+              "b8c6",
+              "g2g3",
+              "a8b8",
+              "e1c1"
+            ]
+          }
+        ]
+      }
+    },
+    "rnb2rk1/pp1nqppp/4p3/2ppP3/3P1P2/2N2N2/PPP3PP/R2QKB1R w KQ - 0 9": {
+      "multiPv1": {
+        "nodes": 241384,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 41,
+            "mate": null,
+            "winPercent": 53.76698043044984,
+            "moveUci": "c3b5",
+            "pv": [
+              "c3b5",
+              "c5d4",
+              "d1d2",
+              "d7c5",
+              "e1c1",
+              "c5e4",
+              "d2e1",
+              "f7f6",
+              "f1d3",
+              "f6e5",
+              "f4e5",
+              "a7a6",
+              "b5d4",
+              "e4c5",
+              "e1e3",
+              "b8c6",
+              "h2h4",
+              "c8d7",
+              "f3g5"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500486,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 40,
+            "mate": null,
+            "winPercent": 53.675438329054,
+            "moveUci": "c3b5",
+            "pv": [
+              "c3b5",
+              "c5d4",
+              "d1d2",
+              "b8c6",
+              "e1c1",
+              "f7f6",
+              "e5f6",
+              "d7f6",
+              "b5d4",
+              "f6e4",
+              "d2e3",
+              "e7c7",
+              "g2g3",
+              "e6e5",
+              "f4e5",
+              "c8g4",
+              "f1c4",
+              "d5c4",
+              "e3e4",
+              "c6d4",
+              "f3g5",
+              "g4f5",
+              "e4d5",
+              "g8h8",
+              "d5d4",
+              "c4c3",
+              "b2c3",
+              "h7h6"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 28,
+            "mate": null,
+            "winPercent": 52.57517538936253,
+            "moveUci": "d1d2",
+            "pv": [
+              "d1d2",
+              "a7a6",
+              "h2h4",
+              "b8c6",
+              "d4c5",
+              "d7c5",
+              "h4h5",
+              "h7h6",
+              "d2e3",
+              "b7b5",
+              "c3e2",
+              "c5e4",
+              "e1c1",
+              "b5b4",
+              "g2g4",
+              "a6a5",
+              "e2d4",
+              "c6d4",
+              "f3d4",
+              "f7f6",
+              "f1d3",
+              "f6e5"
+            ]
+          }
+        ]
+      }
+    },
+    "rnb2rk1/pp1nqppp/4p3/2PpP3/5P2/2N2N2/PPP3PP/R2QKB1R b KQ - 0 9": {
+      "multiPv1": {
+        "nodes": 500185,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -25,
+            "mate": null,
+            "winPercent": 47.700323643230064,
+            "moveUci": "d7c5",
+            "pv": [
+              "d7c5",
+              "d1d2",
+              "b8c6",
+              "d2e3",
+              "a7a6",
+              "h2h4",
+              "b7b5",
+              "h4h5",
+              "h7h6",
+              "c3e2",
+              "c5a4",
+              "e1c1",
+              "e7b4",
+              "e3b3",
+              "b4a5",
+              "c1b1",
+              "d5d4",
+              "e2d4",
+              "c6d4"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500290,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -20,
+            "mate": null,
+            "winPercent": 48.159791558780626,
+            "moveUci": "b8c6",
+            "pv": [
+              "b8c6",
+              "d1d2",
+              "d7c5",
+              "d2e3",
+              "a7a6",
+              "a2a3",
+              "b7b5",
+              "b2b4",
+              "c5e4",
+              "c3e4",
+              "d5e4",
+              "f3g5",
+              "f7f5",
+              "e5f6",
+              "e7f6",
+              "e1c1",
+              "h7h6",
+              "e3e4",
+              "h6g5",
+              "e4c6",
+              "a8b8",
+              "c6d6",
+              "c8b7",
+              "f4g5",
+              "f6a1",
+              "c1d2",
+              "a1a2",
+              "f1d3",
+              "b8d8",
+              "d1a1",
+              "d8d6",
+              "a1a2",
+              "f8f2",
+              "d2e3",
+              "f2g2",
+              "a3a4",
+              "g2g5",
+              "h1d1",
+              "g5e5",
+              "e3d2",
+              "b7d5",
+              "a2a3",
+              "d5c6",
+              "d2c1"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -20,
+            "mate": null,
+            "winPercent": 48.159791558780626,
+            "moveUci": "d7c5",
+            "pv": [
+              "d7c5",
+              "d1d2",
+              "b8c6",
+              "d2e3",
+              "a7a6",
+              "a2a3",
+              "b7b5",
+              "b2b4",
+              "c5e4",
+              "c3e4",
+              "d5e4",
+              "f3g5",
+              "f7f5",
+              "e5f6",
+              "e7f6",
+              "e1c1",
+              "h7h6",
+              "e3e4",
+              "h6g5",
+              "e4c6",
+              "a8b8",
+              "c6d6",
+              "c8b7",
+              "f4g5",
+              "f6a1",
+              "c1d2",
+              "a1a2",
+              "f1d3",
+              "b8d8",
+              "d1a1",
+              "d8d6",
+              "a1a2",
+              "f8f2",
+              "d2e3",
+              "f2g2",
+              "a3a4",
+              "g2g5",
+              "h1d1",
+              "g5e5",
+              "e3d2",
+              "b7d5",
+              "a2a3",
+              "d5c6"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2rk1/pp1nqppp/2n1p3/2PpP3/5P2/2N2N2/PPP3PP/R2QKB1R w KQ - 1 10": {
+      "multiPv1": {
+        "nodes": 209812,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 16,
+            "mate": null,
+            "winPercent": 51.472406158812824,
+            "moveUci": "d1d3",
+            "pv": [
+              "d1d3",
+              "d7c5",
+              "d3e3",
+              "a7a6",
+              "h2h4",
+              "b7b5",
+              "c3e2",
+              "c5e4",
+              "e1c1",
+              "f7f6",
+              "e5f6",
+              "g7f6",
+              "h1g1",
+              "e7a7",
+              "e3a7",
+              "a8a7",
+              "g2g4",
+              "a7g7"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500106,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 11,
+            "mate": null,
+            "winPercent": 51.012433597084375,
+            "moveUci": "d1d2",
+            "pv": [
+              "d1d2",
+              "d7c5",
+              "d2e3",
+              "a7a6",
+              "a2a3",
+              "b7b5",
+              "b2b4",
+              "c5e4",
+              "c3e4",
+              "d5e4",
+              "f3g5",
+              "f7f5",
+              "e5f6",
+              "e7f6",
+              "e1c1",
+              "h7h6",
+              "e3e4",
+              "h6g5",
+              "e4c6",
+              "a8b8",
+              "c6d6",
+              "c8b7",
+              "f4g5",
+              "f6a1",
+              "c1d2",
+              "a1a2",
+              "f1d3",
+              "b8d8",
+              "d6e5",
+              "b7g2",
+              "h1e1",
+              "d8d3",
+              "d2d3",
+              "a2a3",
+              "c2c3"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 10,
+            "mate": null,
+            "winPercent": 50.920416012880864,
+            "moveUci": "d1d3",
+            "pv": [
+              "d1d3",
+              "a7a6",
+              "f1e2",
+              "d7c5",
+              "d3e3",
+              "b7b5",
+              "a2a3",
+              "e7a7",
+              "e1g1",
+              "h7h6",
+              "a1d1",
+              "c5d7",
+              "e3f2",
+              "a7f2",
+              "g1f2",
+              "b5b4",
+              "a3b4",
+              "c6b4",
+              "f3d4",
+              "d7c5",
+              "f2e3"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2rk1/pp1nqppp/2n1p3/2PpP3/5P2/2NB1N2/PPP3PP/R2QK2R b KQ - 2 10": {
+      "multiPv1": {
+        "nodes": 500471,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -10,
+            "mate": null,
+            "winPercent": 49.079583987119136,
+            "moveUci": "d7c5",
+            "pv": [
+              "d7c5",
+              "e1g1",
+              "f7f6",
+              "e5f6",
+              "e7f6",
+              "g2g3",
+              "a7a6",
+              "a2a3",
+              "c8d7",
+              "d1d2",
+              "d7e8",
+              "a1e1",
+              "a8d8",
+              "f1f2",
+              "h7h6",
+              "f3e5",
+              "f6e7",
+              "b2b4",
+              "c6e5",
+              "b4c5"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500646,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -8,
+            "mate": null,
+            "winPercent": 49.26363724400336,
+            "moveUci": "d7c5",
+            "pv": [
+              "d7c5",
+              "e1g1",
+              "h7h6",
+              "d1d2",
+              "c8d7",
+              "a1e1",
+              "e7d8",
+              "a2a3",
+              "c6e7",
+              "h2h3"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -14,
+            "mate": null,
+            "winPercent": 48.711557303526725,
+            "moveUci": "h7h6",
+            "pv": [
+              "h7h6",
+              "d1d2",
+              "d7c5",
+              "e1g1",
+              "c8d7",
+              "a1e1",
+              "a8c8",
+              "h2h3",
+              "e7d8",
+              "a2a3",
+              "d8b6",
+              "d2f2",
+              "d5d4",
+              "c3e4",
+              "c5e4",
+              "d3e4",
+              "b6b2",
+              "e1b1",
+              "b2a3",
+              "b1b7",
+              "d7e8"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2rk1/1p1nqppp/p1n1p3/2PpP3/5P2/2NB1N2/PPP3PP/R2QK2R w KQ - 0 11": {
+      "multiPv1": {
+        "nodes": 500407,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 212,
+            "mate": null,
+            "winPercent": 68.58096201223898,
+            "moveUci": "d3h7",
+            "pv": [
+              "d3h7",
+              "g8h7",
+              "f3g5",
+              "h7g6",
+              "d1d3",
+              "f7f5",
+              "e5f6",
+              "g6f6",
+              "e1c1",
+              "d7c5",
+              "d3g3",
+              "f8d8",
+              "f4f5",
+              "e6e5",
+              "d1d5",
+              "c8f5",
+              "h1f1",
+              "g7g6",
+              "g3h4",
+              "c5e6",
+              "c3e4",
+              "f6g7"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500717,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 229,
+            "mate": null,
+            "winPercent": 69.91379705974721,
+            "moveUci": "d3h7",
+            "pv": [
+              "d3h7",
+              "g8h7",
+              "f3g5",
+              "h7g6",
+              "d1d3",
+              "f7f5",
+              "e1c1",
+              "d7e5",
+              "d3h3",
+              "e7c5",
+              "h1e1",
+              "c5c4",
+              "h3g3",
+              "f8g8"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 61,
+            "mate": null,
+            "winPercent": 55.59168418448287,
+            "moveUci": "c3a4",
+            "pv": [
+              "c3a4",
+              "f7f6",
+              "e5f6",
+              "e7f6",
+              "c2c3",
+              "f6f4",
+              "e1g1",
+              "f4e3",
+              "g1h1",
+              "d7f6",
+              "a4b6",
+              "a8b8",
+              "d1e2",
+              "e3e2",
+              "d3e2",
+              "e6e5",
+              "a1d1",
+              "c8f5"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2rk1/1p1nqppB/p1n1p3/2PpP3/5P2/2N2N2/PPP3PP/R2QK2R b KQ - 0 11": {
+      "multiPv1": {
+        "nodes": 307792,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -268,
+            "mate": null,
+            "winPercent": 27.154510710718377,
+            "moveUci": "g8h7",
+            "pv": [
+              "g8h7",
+              "f3g5",
+              "h7g6",
+              "d1d3",
+              "f7f5",
+              "e1c1",
+              "d7e5",
+              "d3h3",
+              "e5f7",
+              "g2g4",
+              "f8h8",
+              "g4f5",
+              "e6f5",
+              "h3g3",
+              "f7g5",
+              "c3d5",
+              "e7f7",
+              "f4g5",
+              "g6h7",
+              "h1g1",
+              "g7g6",
+              "g1f1",
+              "f5f4",
+              "g3c3"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500195,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -294,
+            "mate": null,
+            "winPercent": 25.302724901334646,
+            "moveUci": "g8h7",
+            "pv": [
+              "g8h7",
+              "f3g5",
+              "h7g6",
+              "d1d3",
+              "f7f5",
+              "e1c1",
+              "d7e5",
+              "d3g3",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h7",
+              "e6g5",
+              "h7g8",
+              "c3d5",
+              "f6d5",
+              "d1d5",
+              "f8e8",
+              "g3h4",
+              "g7g6",
+              "d5d6",
+              "e7g7",
+              "h1d1",
+              "a6a5",
+              "a2a4",
+              "a8a6"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -318,
+            "mate": null,
+            "winPercent": 23.66920834084017,
+            "moveUci": "g8h8",
+            "pv": [
+              "g8h8",
+              "h7d3",
+              "h8g8",
+              "e1g1",
+              "f7f6",
+              "e5f6",
+              "f8f6",
+              "d1d2",
+              "e7c5",
+              "g1h1",
+              "c5d6",
+              "f3g5",
+              "f6h6",
+              "a1e1",
+              "d7f6",
+              "c3a4",
+              "c8d7"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p1nqppk/p1n1p3/2PpP3/5P2/2N2N2/PPP3PP/R2QK2R w KQ - 0 12": {
+      "multiPv1": {
+        "nodes": 149983,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 297,
+            "mate": null,
+            "winPercent": 74.90548382601366,
+            "moveUci": "f3g5",
+            "pv": [
+              "f3g5",
+              "h7g6",
+              "d1d3",
+              "f7f5",
+              "e1c1",
+              "c6e5",
+              "d3g3",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h7",
+              "h1e1",
+              "h7g8",
+              "e6c7",
+              "e7c5",
+              "c7a8",
+              "b7b6",
+              "g3e3",
+              "c8b7",
+              "e3e6",
+              "g8h8",
+              "c3a4",
+              "c5b4",
+              "a8b6",
+              "f8e8",
+              "e6e8",
+              "f6e8",
+              "e1e8",
+              "h8h7",
+              "b6d7",
+              "b4a4"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500537,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 341,
+            "mate": null,
+            "winPercent": 77.8265892525293,
+            "moveUci": "f3g5",
+            "pv": [
+              "f3g5",
+              "h7g6",
+              "d1d3",
+              "f7f5",
+              "e1c1",
+              "c6e5",
+              "d3g3",
+              "d5d4",
+              "d1d4",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "h1e1",
+              "f6h5",
+              "g3h2",
+              "d7f6",
+              "g2g4",
+              "f5g4",
+              "f4f5",
+              "g6g5",
+              "h3g4",
+              "g5h6",
+              "c3d5",
+              "e7f7",
+              "g4g5",
+              "h6g5"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -58,
+            "mate": null,
+            "winPercent": 44.68118376315084,
+            "moveUci": "d1d3",
+            "pv": [
+              "d1d3",
+              "g7g6",
+              "e1c1",
+              "d7c5",
+              "d3d2",
+              "d5d4",
+              "f3d4",
+              "c6d4",
+              "d2d4",
+              "b7b5",
+              "h2h4"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p1nqppk/p1n1p3/2PpP1N1/5P2/2N5/PPP3PP/R2QK2R b KQ - 1 12": {
+      "multiPv1": {
+        "nodes": 64328,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -340,
+            "mate": null,
+            "winPercent": 22.237016798603204,
+            "moveUci": "h7g6",
+            "pv": [
+              "h7g6",
+              "d1d3",
+              "f7f5",
+              "e1c1",
+              "d7e5",
+              "d3g3",
+              "f8h8",
+              "h1e1",
+              "d5d4",
+              "c3e2",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h6",
+              "e2d4"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500619,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -329,
+            "mate": null,
+            "winPercent": 22.945266703370383,
+            "moveUci": "h7g6",
+            "pv": [
+              "h7g6",
+              "d1d3",
+              "f7f5",
+              "e1c1",
+              "c6e5",
+              "d3g3",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h7",
+              "h1e1",
+              "h7g8",
+              "e6c7",
+              "e7c5",
+              "c7a8",
+              "b7b6",
+              "g3e3",
+              "c8b7",
+              "e3c5",
+              "b6c5",
+              "a8c7",
+              "d5d4",
+              "c3b1",
+              "b7g2",
+              "c7e6",
+              "f8e8",
+              "b1d2",
+              "f6d5",
+              "d2c4",
+              "g2e4",
+              "e6g5",
+              "d7f6",
+              "c4d6"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -700,
+            "mate": null,
+            "winPercent": 7.060348244255998,
+            "moveUci": "h7g8",
+            "pv": [
+              "h7g8",
+              "d1h5",
+              "e7g5",
+              "h5g5",
+              "d7c5",
+              "e1g1",
+              "c6d4",
+              "h2h3",
+              "d4c2",
+              "a1d1"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p1nqpp1/p1n1p1k1/2PpP1N1/5P2/2N5/PPP3PP/R2QK2R w KQ - 2 13": {
+      "multiPv1": {
+        "nodes": 500187,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 388,
+            "mate": null,
+            "winPercent": 80.66904213917961,
+            "moveUci": "d1d3",
+            "pv": [
+              "d1d3",
+              "f7f5",
+              "e1c1",
+              "d7e5",
+              "d3g3",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h7",
+              "e6g5",
+              "h7g8",
+              "c3d5",
+              "f6d5",
+              "d1d5",
+              "e7e8",
+              "g3b3"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500001,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 382,
+            "mate": null,
+            "winPercent": 80.32219384766667,
+            "moveUci": "d1d3",
+            "pv": [
+              "d1d3",
+              "f7f5",
+              "e1c1",
+              "d7e5",
+              "d3g3",
+              "f8h8",
+              "h1e1",
+              "d5d4",
+              "c3e2",
+              "d4d3",
+              "e2c3",
+              "h8h6",
+              "c2d3",
+              "e5c4"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 299,
+            "mate": null,
+            "winPercent": 75.04365514263222,
+            "moveUci": "d1f3",
+            "pv": [
+              "d1f3",
+              "d7e5",
+              "f3h3",
+              "f7f5",
+              "e1c1",
+              "e5f7",
+              "g2g4",
+              "f8h8",
+              "g4f5",
+              "e6f5",
+              "h3g3",
+              "f7g5",
+              "c3d5",
+              "e7f7",
+              "f4g5",
+              "g6h7",
+              "h1f1",
+              "c8e6",
+              "d5f4",
+              "g7g6",
+              "f1e1",
+              "a8e8",
+              "d1d6",
+              "e6d7",
+              "f4g6",
+              "f5f4",
+              "g3h4",
+              "h7g7",
+              "g6h8",
+              "e8h8"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p1nqpp1/p1n1p1k1/2PpP1N1/5P2/2NQ4/PPP3PP/R3K2R b KQ - 3 13": {
+      "multiPv1": {
+        "nodes": 172878,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -381,
+            "mate": null,
+            "winPercent": 19.736068787568456,
+            "moveUci": "f7f5",
+            "pv": [
+              "f7f5",
+              "e1c1",
+              "d7e5",
+              "d3g3",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h7",
+              "e6g5",
+              "h7g8",
+              "c3d5",
+              "f6d5",
+              "d1d5",
+              "e7e8",
+              "h1e1",
+              "e8h5",
+              "g3d3"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500295,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -329,
+            "mate": null,
+            "winPercent": 22.945266703370383,
+            "moveUci": "f7f5",
+            "pv": [
+              "f7f5",
+              "e1c1",
+              "d7e5",
+              "d3g3",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h7",
+              "e6g5",
+              "h7g8",
+              "c3d5",
+              "f6d5",
+              "d1d5",
+              "f8e8",
+              "g3h4",
+              "g7g6",
+              "d5d6",
+              "e7g7",
+              "h4g3",
+              "a6a5",
+              "h3h4",
+              "c6d4",
+              "g3d3",
+              "e8f8"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": null,
+            "mate": -2,
+            "winPercent": 0,
+            "moveUci": "g6h5",
+            "pv": [
+              "g6h5",
+              "d3h3",
+              "h5g6",
+              "h3h7"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p1nq1p1/p1n1p1k1/2PpPpN1/5P2/2NQ4/PPP3PP/R3K2R w KQ f6 0 14": {
+      "multiPv1": {
+        "nodes": 500285,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 329,
+            "mate": null,
+            "winPercent": 77.05473329662962,
+            "moveUci": "e1c1",
+            "pv": [
+              "e1c1",
+              "d7e5",
+              "d3g3",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h7",
+              "e6g5",
+              "h7g8",
+              "c3d5",
+              "f6d5",
+              "d1d5",
+              "f8e8",
+              "g3h4",
+              "g7g6",
+              "a2a3"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500057,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 359,
+            "mate": null,
+            "winPercent": 78.94921124308226,
+            "moveUci": "e1c1",
+            "pv": [
+              "e1c1",
+              "d7e5",
+              "d3g3",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6f7",
+              "e6g5",
+              "f7g8",
+              "c3d5",
+              "f6d5",
+              "d1d5",
+              "f8e8",
+              "g3h4",
+              "g7g6",
+              "d5d6",
+              "e7g7",
+              "h4g3",
+              "a6a5",
+              "g3d3",
+              "a8a6",
+              "h3h4",
+              "g8f8",
+              "h4h5",
+              "c6b4",
+              "d3c4",
+              "g7g8",
+              "c4d4",
+              "g8g7",
+              "d4g7",
+              "f8g7",
+              "h5h6",
+              "g7h8",
+              "a2a3",
+              "a6d6",
+              "g5f7",
+              "h8h7"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 341,
+            "mate": null,
+            "winPercent": 77.8265892525293,
+            "moveUci": "d3g3",
+            "pv": [
+              "d3g3",
+              "d7e5",
+              "e1c1",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6f7",
+              "e6g5",
+              "f7g8",
+              "c3d5",
+              "f6d5",
+              "d1d5",
+              "f8e8",
+              "g3h4",
+              "g7g6",
+              "d5d6",
+              "e7g7",
+              "h4g3",
+              "a6a5",
+              "g3h4"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p1nq1p1/p1n1p1k1/2PpPpN1/5P2/2N3Q1/PPP3PP/R3K2R b KQ - 1 14": {
+      "multiPv1": {
+        "nodes": 500019,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -333,
+            "mate": null,
+            "winPercent": 22.68590208800876,
+            "moveUci": "d7e5",
+            "pv": [
+              "d7e5",
+              "e1c1",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h7",
+              "e6g5",
+              "h7g8",
+              "c3d5",
+              "f6d5",
+              "d1d5",
+              "f8e8",
+              "g3h4",
+              "g7g6",
+              "h4g3"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500284,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -365,
+            "mate": null,
+            "winPercent": 20.685972352259473,
+            "moveUci": "d7e5",
+            "pv": [
+              "d7e5",
+              "e1c1",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6f7",
+              "e6g5",
+              "f7g8",
+              "c3d5",
+              "f6d5",
+              "d1d5",
+              "f8e8",
+              "g3h4",
+              "g7g6",
+              "d5d6",
+              "e7g7",
+              "h4g3",
+              "a6a5",
+              "g3d3",
+              "a8a6",
+              "d3d5",
+              "g8h8",
+              "d5d1",
+              "a5a4",
+              "a2a3",
+              "a6a5",
+              "h3h4",
+              "a5b5",
+              "c2c3",
+              "g7g8"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -402,
+            "mate": null,
+            "winPercent": 18.539779231227406,
+            "moveUci": "d7f6",
+            "pv": [
+              "d7f6",
+              "g5e6",
+              "g6f7",
+              "e6g5",
+              "f7e8",
+              "e1c1",
+              "f6e4",
+              "c3e4",
+              "d5e4",
+              "d1d6",
+              "c6d8",
+              "g3b3",
+              "d8f7",
+              "g5f7",
+              "e7f7",
+              "e5e6",
+              "f7c7",
+              "h1d1",
+              "c7c5",
+              "b3h3"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p2q1p1/p1n1p1k1/2PpnpN1/5P2/2N3Q1/PPP3PP/R3K2R w KQ - 0 15": {
+      "multiPv1": {
+        "nodes": 500366,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 354,
+            "mate": null,
+            "winPercent": 78.64161013518402,
+            "moveUci": "e1c1",
+            "pv": [
+              "e1c1",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h6",
+              "e6f8",
+              "e7f8",
+              "c3d5",
+              "f6e4",
+              "g3h4",
+              "h6g6",
+              "g2g4",
+              "g6f7",
+              "h1e1",
+              "c8e6"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500040,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 322,
+            "mate": null,
+            "winPercent": 76.59585393189785,
+            "moveUci": "e1c1",
+            "pv": [
+              "e1c1",
+              "e5g4",
+              "h2h3",
+              "g4f6",
+              "g5e6",
+              "g6h6",
+              "e6f8",
+              "e7f8",
+              "c3d5",
+              "f6e4",
+              "g3h4",
+              "h6g6",
+              "g2g4",
+              "g6f7",
+              "h4h7"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 163,
+            "mate": null,
+            "winPercent": 64.56972666879179,
+            "moveUci": "g5f3",
+            "pv": [
+              "g5f3",
+              "g6f7",
+              "f4e5",
+              "e7c5",
+              "f3g5",
+              "f7e8",
+              "e1c1",
+              "c8d7",
+              "g5f3",
+              "e8f7",
+              "c1b1",
+              "f8h8",
+              "c3e2",
+              "f7g8",
+              "a2a3",
+              "a8c8"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p2q1p1/p1n1p1k1/2PpnpN1/5P1P/2N3Q1/PPP3P1/R3K2R b KQ - 0 15": {
+      "multiPv1": {
+        "nodes": 500133,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 433,
+            "mate": null,
+            "winPercent": 83.1225924592986,
+            "moveUci": "e5g4",
+            "pv": [
+              "e5g4",
+              "e1c1",
+              "e7c5",
+              "h4h5",
+              "g6h6",
+              "g3h4",
+              "c8d7",
+              "c1b1",
+              "f8f6",
+              "a2a3",
+              "c5f2",
+              "g2g3",
+              "f2c5",
+              "h1e1",
+              "a8e8",
+              "c3e4",
+              "f5e4",
+              "h4g4"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500127,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 422,
+            "mate": null,
+            "winPercent": 82.54673326201856,
+            "moveUci": "e5g4",
+            "pv": [
+              "e5g4",
+              "e1c1",
+              "e7c5",
+              "d1d2",
+              "g6h6",
+              "h1e1",
+              "f8f6",
+              "c3d1",
+              "c8d7",
+              "d1e3",
+              "a8f8",
+              "a2a3",
+              "a6a5",
+              "e3g4",
+              "f5g4",
+              "g3g4",
+              "f6f4",
+              "g4g3",
+              "f4f1"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 98,
+            "mate": null,
+            "winPercent": 58.9244688568345,
+            "moveUci": "e5c4",
+            "pv": [
+              "e5c4",
+              "e1c1",
+              "g6h6",
+              "b2b3",
+              "c4a3",
+              "h1e1",
+              "e7f6",
+              "c3a4",
+              "a3b5",
+              "c2c3",
+              "a8b8",
+              "d1d3",
+              "f8e8",
+              "a4b6",
+              "e8e7",
+              "g5f3",
+              "c8d7",
+              "b6d7",
+              "e7d7"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p2q1p1/p1n1p1k1/2Pp1pN1/2n2P1P/2N3Q1/PPP3P1/R3K2R w KQ - 1 16": {
+      "multiPv1": {
+        "nodes": 208933,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -92,
+            "mate": null,
+            "winPercent": 41.611281849809096,
+            "moveUci": "e1c1",
+            "pv": [
+              "e1c1",
+              "g6h6",
+              "h1e1",
+              "e7f6",
+              "b2b3",
+              "c4a3",
+              "c3a4",
+              "f6a1",
+              "c1d2",
+              "a1a2",
+              "d1c1",
+              "c6d4",
+              "a4c3",
+              "d4b3",
+              "d2d1",
+              "a2b2",
+              "c2b3",
+              "b2b3",
+              "d1e2",
+              "b3c4",
+              "e2f2",
+              "c4c5",
+              "f2f1",
+              "a3c4"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500557,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -97,
+            "mate": null,
+            "winPercent": 41.164679702450634,
+            "moveUci": "e1c1",
+            "pv": [
+              "e1c1",
+              "g6h6",
+              "h1e1",
+              "e7f6",
+              "b2b3",
+              "c4a3",
+              "c3a4",
+              "a3b5",
+              "c2c3",
+              "a8b8",
+              "d1d3",
+              "f8e8",
+              "a4b6",
+              "b5c7",
+              "c1b1",
+              "e8e7"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -102,
+            "mate": null,
+            "winPercent": 40.71952805672289,
+            "moveUci": "b2b3",
+            "pv": [
+              "b2b3",
+              "c4a3",
+              "e1c1",
+              "g6h6",
+              "h1e1",
+              "e7f6",
+              "c3a4",
+              "f6a1",
+              "c1d2",
+              "a1a2",
+              "d1c1",
+              "f8f6",
+              "a4b6",
+              "a8b8",
+              "b6d5",
+              "e6d5",
+              "e1e8",
+              "c8e6",
+              "e8b8",
+              "c6b8",
+              "g5e6",
+              "f6g6",
+              "e6g5",
+              "b8d7"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p2q1p1/p1n1N1k1/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/R3K2R b KQ - 0 16": {
+      "multiPv1": {
+        "nodes": 500283,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 714,
+            "mate": null,
+            "winPercent": 93.27051313816389,
+            "moveUci": "g6h7",
+            "pv": [
+              "g6h7",
+              "g3g7",
+              "e7g7",
+              "e6g7",
+              "d5d4",
+              "c3e2",
+              "h7g7",
+              "e1c1",
+              "f8d8",
+              "h1e1",
+              "g7f7",
+              "b2b3"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500597,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 720,
+            "mate": null,
+            "winPercent": 93.40786082743116,
+            "moveUci": "g6h7",
+            "pv": [
+              "g6h7",
+              "e1c1",
+              "c8e6",
+              "h4h5",
+              "e7f6",
+              "b2b3",
+              "d5d4",
+              "b3c4",
+              "d4c3",
+              "d1d6",
+              "a8e8",
+              "h1e1",
+              "c6d8",
+              "d6d8",
+              "e8d8",
+              "g3g6",
+              "f6g6",
+              "h5g6",
+              "h7g8"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 679,
+            "mate": null,
+            "winPercent": 92.41510955819464,
+            "moveUci": "g6f7",
+            "pv": [
+              "g6f7",
+              "g3g7",
+              "f7e6",
+              "g7e7",
+              "c6e7",
+              "e1c1",
+              "e6f7",
+              "h1e1",
+              "f8d8",
+              "h4h5",
+              "d5d4",
+              "b2b3",
+              "c4a5",
+              "g2g4",
+              "a5c6",
+              "g4g5",
+              "d4c3",
+              "g5g6",
+              "f7f8",
+              "d1d8",
+              "c6d8"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p2qkp1/p1n1N3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/R3K2R w KQ - 1 17": {
+      "multiPv1": {
+        "nodes": 500032,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -660,
+            "mate": null,
+            "winPercent": 8.09006176186363,
+            "moveUci": "g3g7",
+            "pv": [
+              "g3g7",
+              "f7e6",
+              "g7e7",
+              "c6e7",
+              "e1c1",
+              "e6f7",
+              "h1e1",
+              "c8e6",
+              "c3e2",
+              "c4e3",
+              "e2d4",
+              "e3d1",
+              "d4e6",
+              "d1f2",
+              "c1d2",
+              "f2e4",
+              "e1e4",
+              "f5e4"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500166,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -659,
+            "mate": null,
+            "winPercent": 8.117482411679902,
+            "moveUci": "g3g7",
+            "pv": [
+              "g3g7",
+              "f7e6",
+              "g7e7",
+              "c6e7",
+              "e1c1",
+              "e6f7",
+              "h1e1",
+              "f8h8",
+              "b2b3",
+              "c4a5",
+              "c3e2",
+              "a5c6",
+              "e2g1",
+              "f7f8",
+              "g1f3",
+              "a8b8",
+              "c2c4",
+              "d5c4"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -725,
+            "mate": null,
+            "winPercent": 6.479677651561552,
+            "moveUci": "e1c1",
+            "pv": [
+              "e1c1",
+              "c8e6",
+              "h4h5",
+              "e7f6",
+              "b2b3",
+              "d5d4",
+              "b3c4",
+              "d4c3",
+              "h5h6",
+              "f8g8",
+              "h6h7",
+              "g8h8",
+              "d1d6",
+              "a8e8",
+              "h1h5"
+            ]
+          }
+        ]
+      }
+    },
+    "r1b2r2/1p2qkp1/p1n1N3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/2KR3R b - - 2 17": {
+      "multiPv1": {
+        "nodes": 500042,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 737,
+            "mate": null,
+            "winPercent": 93.78298153116633,
+            "moveUci": "c8e6",
+            "pv": [
+              "c8e6",
+              "h4h5",
+              "e7f6",
+              "h1e1",
+              "f8e8",
+              "b2b3",
+              "d5d4",
+              "b3c4",
+              "d4c3",
+              "d1d6",
+              "f7g8",
+              "g3e3",
+              "c6d8",
+              "e3g3",
+              "f6h6",
+              "g3g6",
+              "h6g6",
+              "h5g6",
+              "g8f8",
+              "c5c6"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500013,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 725,
+            "mate": null,
+            "winPercent": 93.52032234843844,
+            "moveUci": "c8e6",
+            "pv": [
+              "c8e6",
+              "b2b3",
+              "d5d4",
+              "b3c4",
+              "d4c3",
+              "h4h5",
+              "e7f6",
+              "d1d6",
+              "a8e8",
+              "a2a4",
+              "a6a5",
+              "c1b1",
+              "e8d8"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 495,
+            "mate": null,
+            "winPercent": 86.08813591131842,
+            "moveUci": "e7e6",
+            "pv": [
+              "e7e6",
+              "c3d5",
+              "f8d8",
+              "d5c7",
+              "e6f6",
+              "c2c3",
+              "a8b8",
+              "b2b3",
+              "c4d2",
+              "d1d2",
+              "d8d2",
+              "c1d2",
+              "f6d8",
+              "d2c1",
+              "d8c7",
+              "h4h5",
+              "f7g8",
+              "h5h6",
+              "c7f7"
+            ]
+          }
+        ]
+      }
+    },
+    "r4r2/1p2qkp1/p1n1b3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/2KR3R w - - 0 18": {
+      "multiPv1": {
+        "nodes": 500424,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -740,
+            "mate": null,
+            "winPercent": 6.152923944931771,
+            "moveUci": "b2b3",
+            "pv": [
+              "b2b3",
+              "d5d4",
+              "b3c4",
+              "d4c3",
+              "h4h5",
+              "e7f6",
+              "d1d6",
+              "a8e8",
+              "h1e1",
+              "f8h8",
+              "g3g5",
+              "f6g5",
+              "f4g5",
+              "c6d8",
+              "c5c6",
+              "b7c6",
+              "d6d8",
+              "e8d8"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500487,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -726,
+            "mate": null,
+            "winPercent": 6.4574006493941525,
+            "moveUci": "c3d5",
+            "pv": [
+              "c3d5",
+              "e6d5",
+              "d1d5",
+              "f7g8",
+              "h1e1",
+              "e7f6",
+              "c2c3",
+              "f8d8",
+              "g3d3",
+              "f6f7",
+              "d5d8",
+              "a8d8",
+              "d3d8",
+              "c6d8",
+              "b2b3",
+              "c4a5",
+              "c5c6",
+              "a5b3",
+              "c1b2"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -757,
+            "mate": null,
+            "winPercent": 5.8012442089562555,
+            "moveUci": "b2b3",
+            "pv": [
+              "b2b3",
+              "d5d4",
+              "b3c4",
+              "d4c3",
+              "d1d6",
+              "f8d8",
+              "h4h5",
+              "e7f6",
+              "h1h3",
+              "d8h8",
+              "g3e3",
+              "a8e8",
+              "e3e2",
+              "e8e7"
+            ]
+          }
+        ]
+      }
+    },
+    "r4r2/1p2qkp1/p1n1b3/2Pp1p2/2n2P1P/2N3Q1/PPP3P1/2KRR3 b - - 1 18": {
+      "multiPv1": {
+        "nodes": 500203,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 760,
+            "mate": null,
+            "winPercent": 94.25882628426288,
+            "moveUci": "e7f6",
+            "pv": [
+              "e7f6",
+              "h4h5",
+              "d5d4",
+              "g3g6",
+              "f6g6",
+              "h5g6",
+              "f7g8",
+              "c3e2",
+              "f8f6",
+              "e2d4",
+              "c6d4",
+              "d1d4",
+              "f6g6",
+              "g2g4",
+              "c4a5",
+              "d4d6",
+              "e6f7",
+              "g4f5"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500553,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": 762,
+            "mate": null,
+            "winPercent": 94.29854825478074,
+            "moveUci": "e7f6",
+            "pv": [
+              "e7f6",
+              "h4h5",
+              "d5d4",
+              "g3g6",
+              "f6g6",
+              "h5g6",
+              "f7f6",
+              "c3e2",
+              "f8d8",
+              "e2g3",
+              "e6g8",
+              "g3h5",
+              "f6g6"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": 741,
+            "mate": null,
+            "winPercent": 93.86830333890032,
+            "moveUci": "a8d8",
+            "pv": [
+              "a8d8",
+              "h4h5",
+              "e7f6",
+              "g3g6",
+              "f6g6",
+              "h5g6",
+              "f7f6",
+              "b2b3",
+              "d5d4",
+              "g2g4",
+              "d4c3",
+              "g4g5",
+              "f6e7",
+              "d1d3",
+              "d8d3"
+            ]
+          }
+        ]
+      }
+    },
+    "r4r2/1p3kp1/p1n1b3/2qp1p2/2n2P1P/2N3Q1/PPP3P1/2KRR3 w - - 0 19": {
+      "multiPv1": {
+        "nodes": 500313,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -649,
+            "mate": null,
+            "winPercent": 8.396381614947103,
+            "moveUci": "h4h5",
+            "pv": [
+              "h4h5",
+              "c6e7",
+              "h5h6",
+              "g7h6",
+              "g3h2",
+              "c5b4",
+              "c3a4",
+              "e7g6",
+              "e1e6",
+              "f7e6",
+              "h2h6",
+              "f8f6",
+              "h6g7"
+            ]
+          }
+        ]
+      },
+      "multiPv2": {
+        "nodes": 500304,
+        "lines": [
+          {
+            "multiPvRank": 1,
+            "cp": -684,
+            "mate": null,
+            "winPercent": 7.456844680878731,
+            "moveUci": "h4h5",
+            "pv": [
+              "h4h5",
+              "c6e7",
+              "h5h6",
+              "g7h6",
+              "g3h2",
+              "c5d6",
+              "d1d4",
+              "f8h8",
+              "c3d5",
+              "e6d5",
+              "h2h5",
+              "f7f8",
+              "e1e7",
+              "f8e7"
+            ]
+          },
+          {
+            "multiPvRank": 2,
+            "cp": -724,
+            "mate": null,
+            "winPercent": 6.502026163941608,
+            "moveUci": "a2a3",
+            "pv": [
+              "a2a3",
+              "a8e8",
+              "h4h5",
+              "c6e7",
+              "g3g5",
+              "f8h8",
+              "g2g4",
+              "c4e3",
+              "e1e2",
+              "h8h6",
+              "d1g1",
+              "d5d4"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "expected": {
+    "pliesCount": 36,
+    "bookPliesCount": 10,
+    "forcedPlies": [],
+    "brilliantPlies": [
+      21
+    ],
+    "greatPlies": [
+      23
+    ],
+    "missedPunishmentPlies": [
+      30,
+      31
+    ],
+    "phasesSeen": [
+      "opening",
+      "middlegame"
+    ],
+    "labelCounts": {
+      "book": 10,
+      "best": 7,
+      "excellent": 10,
+      "inaccuracy": 1,
+      "brilliant": 1,
+      "good": 3,
+      "great": 1,
+      "blunder": 2,
+      "mistake": 1
+    },
+    "aggregatesByAlignment": {
+      "leading": {
+        "windowSizeK": 3,
+        "white": {
+          "compositeAccuracy": 48.957298,
+          "volatilityWeightedAccuracy": 54.930734,
+          "harmonicAccuracy": 42.983861,
+          "acpl": 88,
+          "moveCount": 18,
+          "phaseAccuracies": {
+            "opening": 98.355848,
+            "middlegame": 23.01912
+          }
+        },
+        "black": {
+          "compositeAccuracy": 75.936491,
+          "volatilityWeightedAccuracy": 69.340526,
+          "harmonicAccuracy": 82.532455,
+          "acpl": 47.222222,
+          "moveCount": 18,
+          "phaseAccuracies": {
+            "opening": 79.413587,
+            "middlegame": 70.703762
+          }
+        }
+      },
+      "trailing": {
+        "windowSizeK": 3,
+        "white": {
+          "compositeAccuracy": 48.481846,
+          "volatilityWeightedAccuracy": 53.97983,
+          "harmonicAccuracy": 42.983861,
+          "acpl": 88,
+          "moveCount": 18,
+          "phaseAccuracies": {
+            "opening": 98.634272,
+            "middlegame": 22.589466
+          }
+        },
+        "black": {
+          "compositeAccuracy": 76.646028,
+          "volatilityWeightedAccuracy": 70.759601,
+          "harmonicAccuracy": 82.532455,
+          "acpl": 47.222222,
+          "moveCount": 18,
+          "phaseAccuracies": {
+            "opening": 80.922589,
+            "middlegame": 70.880776
+          }
+        }
+      },
+      "centred": {
+        "windowSizeK": 3,
+        "white": {
+          "compositeAccuracy": 48.957298,
+          "volatilityWeightedAccuracy": 54.930734,
+          "harmonicAccuracy": 42.983861,
+          "acpl": 88,
+          "moveCount": 18,
+          "phaseAccuracies": {
+            "opening": 98.355848,
+            "middlegame": 23.01912
+          }
+        },
+        "black": {
+          "compositeAccuracy": 75.936491,
+          "volatilityWeightedAccuracy": 69.340526,
+          "harmonicAccuracy": 82.532455,
+          "acpl": 47.222222,
+          "moveCount": 18,
+          "phaseAccuracies": {
+            "opening": 79.413587,
+            "middlegame": 70.703762
+          }
+        }
+      }
+    }
+  }
+}

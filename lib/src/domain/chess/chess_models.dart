@@ -283,6 +283,7 @@ class EngineEvalEntity {
   final List<String> pvUci;
   final List<Map<String, dynamic>> multipv;
   final int createdAt;
+  final bool isReliable;
 
   const EngineEvalEntity({
     required this.positionKey,
@@ -293,6 +294,7 @@ class EngineEvalEntity {
     required this.pvUci,
     this.multipv = const [],
     required this.createdAt,
+    this.isReliable = true,
   });
 
   Map<String, dynamic> toMap() => {
@@ -304,11 +306,13 @@ class EngineEvalEntity {
         'pv_uci': pvUci.join(' '),
         'multipv_json': jsonEncode(multipv),
         'created_at': createdAt,
+        'is_reliable': isReliable ? 1 : 0,
       };
 
   factory EngineEvalEntity.fromMap(Map<String, dynamic> map) {
     final pvStr = (map['pv_uci'] as String?) ?? '';
     final mpvStr = (map['multipv_json'] as String?) ?? '[]';
+    final isReliableInt = map['is_reliable'] as int?;
     return EngineEvalEntity(
       positionKey: map['position_key'] as String,
       cp: map['cp'] as int?,
@@ -320,6 +324,7 @@ class EngineEvalEntity {
           .map((e) => Map<String, dynamic>.from(e as Map))
           .toList(),
       createdAt: (map['created_at'] as int?) ?? 0,
+      isReliable: isReliableInt == null ? true : isReliableInt == 1,
     );
   }
 }

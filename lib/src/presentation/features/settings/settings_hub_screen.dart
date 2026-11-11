@@ -144,6 +144,19 @@ class SettingsHubScreen extends ConsumerWidget {
             }
           },
         ),
+        SwitchListTile(
+          key: const Key('use_new_classifier_switch'),
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Use New Classifier (v2)'),
+          subtitle: Text(
+            uiState.useNewClassifier
+                ? 'Active: chess_review_core (PV sacrifices & composite accuracy).'
+                : 'Legacy fallback active. Enable for recommended review accuracy.',
+          ),
+          value: uiState.useNewClassifier,
+          onChanged: (v) =>
+              ref.read(appUiProvider.notifier).setUseNewClassifier(v),
+        ),
         const Divider(),
         ListTile(
           contentPadding: EdgeInsets.zero,

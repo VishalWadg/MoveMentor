@@ -39,3 +39,9 @@ migrate_working_dir/
 
 # Local GGUF models
 *.gguf
+
+# Engine tools & caches
+engine_tools/
+temp_sf/
+tool/cache/
+

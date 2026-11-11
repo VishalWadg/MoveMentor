@@ -1,16 +1,16 @@
 import 'package:chess/chess.dart' as ch;
+import 'package:chess_review_core/chess_review_core.dart' as core;
+import '../adapters/engine/stockfish_engine_adapter.dart';
 import '../adapters/providers/llama_and_remote_providers.dart';
 import '../adapters/storage/sqlite_storage_adapter.dart';
 import '../domain/analysis/critical_moment_selector.dart';
 import '../domain/analysis/move_classifier.dart';
-import '../domain/analysis/phase_detector.dart';
-import '../domain/analysis/win_accuracy_calculator.dart';
 import '../domain/chess/chess_models.dart';
-import '../domain/chess/fen_normalizer.dart';
 import '../domain/chess/see_evaluator.dart';
 import '../domain/coach/coach_contracts.dart';
 import '../domain/tags/tag_detector.dart';
 import '../ports/ports.dart';
+import 'game_review_runner.dart';
 
 class AnalysisProgressState {
   final String gameId;
@@ -65,17 +65,43 @@ class AnalysisPipelineService {
   final StorageRepository storage;
   final EngineService engine;
   final ProviderRegistry providerRegistry;
+  final core.OpeningBookPort? openingBook;
+  final bool defaultUseNewClassifier;
+  final core.ClassificationConfig? defaultCoreConfig;
+  final core.EngineBudget? defaultCoreBudget;
 
   AnalysisPipelineService({
     required this.storage,
     required this.engine,
     required this.providerRegistry,
+    this.openingBook,
+    this.defaultUseNewClassifier = true,
+    this.defaultCoreConfig,
+    this.defaultCoreBudget,
   });
+
+  bool resolveUseNewClassifier({bool? override}) {
+    if (override != null) return override;
+    final raw = storage.getSetting('use_new_classifier');
+    if (raw == 'true') return true;
+    if (raw == 'false') return false;
+    return defaultUseNewClassifier;
+  }
+
+  core.ClassificationConfig resolveCoreConfig(String classPresetId) =>
+      GameReviewRunner.resolveCoreConfig(
+        classPresetId,
+        base: defaultCoreConfig,
+      );
+
+  core.EngineBudget resolveCoreBudget(EnginePresetConfig preset) =>
+      GameReviewRunner.resolveCoreBudget(preset, override: defaultCoreBudget);
 
   Stream<AnalysisProgressState> analyseGame(
     String gameId, {
     CancelToken? cancel,
     bool explainMoments = true,
+    bool? useNewClassifier,
   }) async* {
     final game = storage.getGame(gameId);
     if (game == null || !game.isAnalysable) return;
@@ -95,229 +121,65 @@ class AnalysisPipelineService {
     storage.updateGameStatus(gameId, 'analysing');
     final totalPlies = positions.length - 1;
 
-    // Stage 2: Engine pass over all positions (with per-position cache reuse for instant resume)
-    final evalsByPly = <int, EngineEvalEntity>{};
-    for (var i = 0; i < positions.length; i++) {
-      if (cancel?.isCancelled == true) {
+    final ExecutedGameReview? executed;
+    if (resolveUseNewClassifier(override: useNewClassifier)) {
+      try {
+        executed = await GameReviewRunner.runNewCore(
+          gameId: gameId,
+          positions: positions,
+          storage: storage,
+          engine: engine,
+          enginePreset: preset,
+          legacyConfig: classConfig,
+          openingBook: openingBook,
+          coreConfigOverride: resolveCoreConfig(classPresetId),
+          coreBudgetOverride: resolveCoreBudget(preset),
+          cancel: cancel,
+        );
+      } on EngineCancelledException {
         yield AnalysisProgressState(
           gameId: gameId,
-          currentPly: i,
+          currentPly: 0,
           totalPlies: totalPlies,
           stage: 'paused',
           thermalThrottled: engine.isThermalThrottled,
         );
         return;
       }
+    } else {
+      executed = await GameReviewRunner.runLegacy(
+        gameId: gameId,
+        positions: positions,
+        storage: storage,
+        engine: engine,
+        enginePreset: preset,
+        classConfig: classConfig,
+        cancel: cancel,
+      );
+    }
 
-      final pos = positions[i];
-      var cached = storage.getEngineEval(pos.positionKey);
-      if (cached == null) {
-        final rawEval = await engine.evaluatePosition(
-          pos.fen,
-          preset,
-          multiPv: preset.defaultMultiPv,
-        );
-        cached = EngineEvalEntity(
-          positionKey: pos.positionKey,
-          cp: rawEval.cp,
-          mate: rawEval.mate,
-          depth: rawEval.depth,
-          nodes: rawEval.nodes,
-          pvUci: rawEval.pvUci,
-          multipv: rawEval.multipv,
-          createdAt: rawEval.createdAt,
-        );
-        storage.saveEngineEval(cached);
-      }
-      evalsByPly[pos.ply] = cached;
-
+    if (executed == null || cancel?.isCancelled == true) {
       yield AnalysisProgressState(
         gameId: gameId,
-        currentPly: i,
+        currentPly: 0,
         totalPlies: totalPlies,
-        stage: 'evaluating',
+        stage: 'paused',
         thermalThrottled: engine.isThermalThrottled,
       );
+      return;
     }
 
-    // Compute White's Win% at every position to derive sliding-window volatility (Part 11.4 & 19-8)
-    final whiteWinPercents = <double>[];
-    for (var i = 0; i < positions.length; i++) {
-      final ev = evalsByPly[i]!;
-      final sideToMoveIsWhite = i.isEven;
-      final moverWin =
-          WinAccuracyCalculator.winPercentFromScore(cp: ev.cp, mate: ev.mate);
-      final whiteWin = sideToMoveIsWhite ? moverWin : (100.0 - moverWin);
-      whiteWinPercents.add(whiteWin);
-    }
-    final volatilities =
-        WinAccuracyCalculator.computeVolatilities(whiteWinPercents);
+    final evalsByPly = executed.evalsByPly;
+    final moveAnalyses = executed.moveAnalyses;
+    final summary = executed.summary;
 
-    // Stage 3: Classify moves & compute per-move accuracies
-    final moveAnalyses = <MoveAnalysisEntity>[];
-    final whiteAccs = <double>[];
-    final blackAccs = <double>[];
-    final whiteVols = <double>[];
-    final blackVols = <double>[];
-    final whiteCpLosses = <double>[];
-    final blackCpLosses = <double>[];
-
-    final phaseAccs = <String, Map<String, List<double>>>{
-      'white': {'Opening': [], 'Middlegame': [], 'Endgame': []},
-      'black': {'Opening': [], 'Middlegame': [], 'Endgame': []},
-    };
-    final labelCounts = <String, Map<String, int>>{
-      'white': {},
-      'black': {},
-    };
-
-    String? prevCaptureSquare;
-
-    for (var ply = 1; ply < positions.length; ply++) {
-      final posBefore = positions[ply - 1];
-      final posAfter = positions[ply];
-      final evalBefore = evalsByPly[ply - 1]!;
-      final evalAfter = evalsByPly[ply]!;
-      final moverIsWhite = ply.isOdd;
-
-      final winBeforeMover = WinAccuracyCalculator.winPercentFromScore(
-        cp: evalBefore.cp,
-        mate: evalBefore.mate,
-      );
-      // evalAfter is from opponent's perspective, so invert to get mover's winAfter
-      final oppWinAfter = WinAccuracyCalculator.winPercentFromScore(
-        cp: evalAfter.cp,
-        mate: evalAfter.mate,
-      );
-      final winAfterMover = (100.0 - oppWinAfter).clamp(0.0, 100.0);
-      final deltaW =
-          WinAccuracyCalculator.computeDeltaW(winBeforeMover, winAfterMover);
-      final moveAcc = WinAccuracyCalculator.moveAccuracyFromDeltaW(deltaW);
-
-      final epdAfter = FenNormalizer.toEpd(posAfter.fen);
-      final isBook = ply <= classConfig.maxBookPly &&
-          storage.lookupOpeningByEpd(epdAfter) != null;
-
-      final phase = PhaseDetector.detectPhase(
-        fen: posAfter.fen,
-        ply: ply,
-        isBook: isBook,
-      );
-
-      final bestMoveUci = evalBefore.pvUci.isNotEmpty
-          ? evalBefore.pvUci.first
-          : posAfter.moveUci;
-      final isEngineTopMove =
-          bestMoveUci != null && bestMoveUci == posAfter.moveUci;
-
-      // Check candidate re-search at MultiPV=2 (Part 19-6)
-      double? secondBestDeltaW;
-      if (evalBefore.multipv.length >= 2) {
-        final secondLine = evalBefore.multipv[1];
-        final secondWin = WinAccuracyCalculator.winPercentFromScore(
-          cp: secondLine['cp'] as int?,
-          mate: secondLine['mate'] as int?,
-        );
-        secondBestDeltaW = (winBeforeMover - secondWin).clamp(0.0, 100.0);
-      } else if (MoveClassifier.isMultiPv2Candidate(
-        isEngineTopMove: isEngineTopMove,
-        winBefore: winBeforeMover,
-        deltaW: deltaW,
-      )) {
-        final mpv2Eval =
-            await engine.evaluatePosition(posBefore.fen, preset, multiPv: 2);
-        if (mpv2Eval.multipv.length >= 2) {
-          final secondLine = mpv2Eval.multipv[1];
-          final secondWin = WinAccuracyCalculator.winPercentFromScore(
-            cp: secondLine['cp'] as int?,
-            mate: secondLine['mate'] as int?,
-          );
-          secondBestDeltaW = (winBeforeMover - secondWin).clamp(0.0, 100.0);
-        }
-      }
-
-      final moveSan = posAfter.moveSan ?? '';
-      final destSq = _extractDestSq(moveSan);
-      final isRecapture =
-          moveSan.contains('x') && prevCaptureSquare == destSq;
-      if (moveSan.contains('x')) {
-        prevCaptureSquare = destSq;
-      } else {
-        prevCaptureSquare = null;
-      }
-
-      final seeVal = SeeEvaluator.seeOfMove(posBefore.fen, moveSan);
-      final isSacrifice = !isRecapture && seeVal <= -2;
-
-      final boardBefore = ch.Chess.fromFEN(posBefore.fen);
-      final legalCount = boardBefore.generate_moves().length;
-
-      final mateBeforeForMover = evalBefore.mate;
-      final mateAfterForMover =
-          evalAfter.mate != null ? -evalAfter.mate! : null;
-
-      final label = MoveClassifier.classify(
-        winBefore: winBeforeMover,
-        winAfter: winAfterMover,
-        deltaW: deltaW,
-        isBook: isBook,
-        isEngineTopMove: isEngineTopMove,
-        isSacrifice: isSacrifice,
-        isRecapture: isRecapture,
-        isForcedOnlyLegalMove: legalCount <= 1,
-        secondBestDeltaW: secondBestDeltaW,
-        mateBeforeForMover: mateBeforeForMover,
-        mateAfterForMover: mateAfterForMover,
-        config: classConfig,
-      );
-
-      final vol = ply < volatilities.length ? volatilities[ply] : 1.0;
-      final bestSan = _uciToSan(posBefore.fen, bestMoveUci) ?? moveSan;
-
-      final item = MoveAnalysisEntity(
-        gameId: gameId,
-        ply: ply,
-        winBefore: winBeforeMover,
-        winAfter: winAfterMover,
-        deltaW: deltaW,
-        accuracy: moveAcc,
-        label: label,
-        isBook: isBook,
-        isSacrifice: isSacrifice,
-        bestMoveUci: bestMoveUci,
-        bestMoveSan: bestSan,
-        secondBestDeltaW: secondBestDeltaW,
-        volatility: vol,
-        phase: phase,
-        presetId: classConfig.presetId,
-      );
-
-      storage.saveMoveAnalysis(item);
-      moveAnalyses.add(item);
-
-      // Accumulate side stats
-      final cpBeforeMover = evalBefore.mate != null
-          ? (evalBefore.mate! > 0 ? 1000 : -1000)
-          : (evalBefore.cp ?? 0).clamp(-1000, 1000);
-      final cpAfterMover = evalAfter.mate != null
-          ? (-evalAfter.mate! > 0 ? 1000 : -1000)
-          : (-(evalAfter.cp ?? 0)).clamp(-1000, 1000);
-      final cpLoss = (cpBeforeMover - cpAfterMover).clamp(0, 1000).toDouble();
-
-      final sideKey = moverIsWhite ? 'white' : 'black';
-      if (moverIsWhite) {
-        whiteAccs.add(moveAcc);
-        whiteVols.add(vol);
-        whiteCpLosses.add(cpLoss);
-      } else {
-        blackAccs.add(moveAcc);
-        blackVols.add(vol);
-        blackCpLosses.add(cpLoss);
-      }
-      phaseAccs[sideKey]![phase.label]!.add(moveAcc);
-      labelCounts[sideKey]![label.label] =
-          (labelCounts[sideKey]![label.label] ?? 0) + 1;
-    }
+    yield AnalysisProgressState(
+      gameId: gameId,
+      currentPly: totalPlies,
+      totalPlies: totalPlies,
+      stage: 'evaluating',
+      thermalThrottled: engine.isThermalThrottled,
+    );
 
     // Stage 4: Select Critical Moments (5-8 moments, spacing >= 3 plies)
     final rawMoments = CriticalMomentSelector.selectMoments(
@@ -366,40 +228,6 @@ class AnalysisPipelineService {
     storage.saveCriticalMoments(gameId, enrichedMoments, allEmittedTags);
 
     // Save Game Summary
-    final summary = GameSummaryEntity(
-      gameId: gameId,
-      accWhite: WinAccuracyCalculator.computeCompositeAccuracy(
-        moveAccuracies: whiteAccs,
-        volatilities: whiteVols,
-      ),
-      accBlack: WinAccuracyCalculator.computeCompositeAccuracy(
-        moveAccuracies: blackAccs,
-        volatilities: blackVols,
-      ),
-      acplWhite: WinAccuracyCalculator.computeAcpl(whiteCpLosses),
-      acplBlack: WinAccuracyCalculator.computeAcpl(blackCpLosses),
-      phaseAccuracy: {
-        'white': phaseAccs['white']!.map(
-          (k, list) => MapEntry(
-            k,
-            list.isEmpty
-                ? 100.0
-                : list.reduce((a, b) => a + b) / list.length,
-          ),
-        ),
-        'black': phaseAccs['black']!.map(
-          (k, list) => MapEntry(
-            k,
-            list.isEmpty
-                ? 100.0
-                : list.reduce((a, b) => a + b) / list.length,
-          ),
-        ),
-      },
-      counts: labelCounts,
-      presetId: classConfig.presetId,
-      engineVersion: engine.engineVersion,
-    );
     storage.saveGameSummary(summary);
     storage.updateGameStatus(gameId, 'analysed');
 
@@ -587,26 +415,6 @@ class AnalysisPipelineService {
       default:
         return 'Focus on $tagCode ($count occurrences in recent games).';
     }
-  }
-
-  static String _extractDestSq(String san) {
-    final m = RegExp(r'([a-h][1-8])').allMatches(san);
-    return m.isNotEmpty ? m.last.group(1)! : 'e4';
-  }
-
-  static String? _uciToSan(String fen, String? uci) {
-    if (uci == null || uci.isEmpty) return null;
-    try {
-      final game = ch.Chess.fromFEN(fen);
-      for (final m in game.generate_moves()) {
-        final cand =
-            '${m.fromAlgebraic}${m.toAlgebraic}${m.promotion?.name ?? ''}';
-        if (cand.toLowerCase() == uci.toLowerCase()) {
-          return game.move_to_san(m);
-        }
-      }
-    } catch (_) {}
-    return uci;
   }
 
   static List<String> _uciLineToSan(String startFen, List<String> pvUci) {

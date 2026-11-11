@@ -1,9 +1,13 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../adapters/engine/stockfish_engine_adapter.dart';
 import '../adapters/network/network_gateway_adapter.dart';
 import '../adapters/providers/llama_and_remote_providers.dart';
 import '../adapters/sources/game_sources_adapter.dart';
+import '../adapters/storage/opening_book_adapter.dart';
 import '../adapters/storage/sqlite_storage_adapter.dart';
 import '../domain/chess/chess_models.dart';
 import '../domain/chess/pgn_parser.dart';
@@ -15,6 +19,7 @@ class AppServices {
   final NetworkGatewayAdapter gateway;
   final SecureStoreAdapter secureStore;
   final StockfishEngineAdapter engine;
+  final OpeningBookAdapter openingBook;
   final ProviderRegistry providerRegistry;
   final AnalysisPipelineService pipeline;
   final ExportService exportService;
@@ -27,19 +32,49 @@ class AppServices {
     required this.gateway,
     required this.secureStore,
     required this.engine,
+    OpeningBookAdapter? openingBook,
     required this.providerRegistry,
     required this.pipeline,
     required this.exportService,
     required this.lichessSource,
     required this.chessComSource,
     required this.pgnSource,
-  });
+  }) : openingBook = openingBook ?? OpeningBookAdapter.fromStorage(storage);
 
-  factory AppServices.createDefault({bool seedDemoGame = true}) {
+  /// Ensures all ECO opening entries are loaded from [assetLoader] (defaults
+  /// to Flutter's [rootBundle.loadString]) if disk startup loading was unavailable
+  /// (e.g., packaged Android/iOS/desktop release assets).
+  Future<void> ensureOpeningsLoaded([
+    Future<String> Function(String path)? assetLoader,
+  ]) async {
+    if (openingBook.entryCount >= 100) return;
+    try {
+      final loader = assetLoader ?? rootBundle.loadString;
+      final jsonStr = await loader('assets/openings/eco_openings.json');
+      openingBook.loadJsonString(jsonStr);
+    } catch (_) {}
+  }
+
+  factory AppServices.createDefault({
+    bool seedDemoGame = true,
+    String? stockfishBinaryPath,
+    bool autoDiscoverDesktopStockfish = true,
+    bool refuseSilentFallback = false,
+    bool defaultUseNewClassifier = true,
+  }) {
     final storage = StorageRepository();
+    final openingBook = OpeningBookAdapter.fromStorage(storage);
     final gateway = NetworkGatewayAdapter(initialOfflineOnly: true);
     final secureStore = SecureStoreAdapter(useMemoryOnly: true);
-    final engine = StockfishEngineAdapter();
+    final isFlutterTest = Platform.environment['FLUTTER_TEST'] == 'true';
+    final resolvedBinaryPath = stockfishBinaryPath ??
+        ((autoDiscoverDesktopStockfish && !isFlutterTest)
+            ? StockfishEngineAdapter.discoverDefaultStockfishPath()
+            : null);
+    final engine = StockfishEngineAdapter(
+      customStockfishBinaryPath: resolvedBinaryPath,
+      refuseSilentFallback: refuseSilentFallback,
+    );
     final registry = ProviderRegistry(
       storage: storage,
       gateway: gateway,
@@ -49,6 +84,8 @@ class AppServices {
       storage: storage,
       engine: engine,
       providerRegistry: registry,
+      openingBook: openingBook,
+      defaultUseNewClassifier: defaultUseNewClassifier,
     );
     final exportService = ExportService(
       storage: storage,
@@ -87,6 +124,7 @@ class AppServices {
       gateway: gateway,
       secureStore: secureStore,
       engine: engine,
+      openingBook: openingBook,
       providerRegistry: registry,
       pipeline: pipeline,
       exportService: exportService,
@@ -98,7 +136,17 @@ class AppServices {
 }
 
 final appServicesProvider = Provider<AppServices>((ref) {
-  return AppServices.createDefault();
+  final services = AppServices.createDefault();
+  if (Platform.environment['FLUTTER_TEST'] != 'true') {
+    unawaited(services.ensureOpeningsLoaded());
+    if (services.engine.customStockfishBinaryPath != null) {
+      unawaited(services.engine.init());
+    }
+  }
+  ref.onDispose(() {
+    unawaited(services.engine.dispose());
+  });
+  return services;
 });
 
 class AppUiState {
@@ -113,6 +161,7 @@ class AppUiState {
   final List<GameEntity> games;
   final String? selectedGameId;
   final bool reviewBothSides;
+  final bool useNewClassifier;
   final int revision;
 
   const AppUiState({
@@ -127,6 +176,7 @@ class AppUiState {
     required this.games,
     this.selectedGameId,
     this.reviewBothSides = false,
+    this.useNewClassifier = true,
     this.revision = 0,
   });
 
@@ -142,6 +192,7 @@ class AppUiState {
     List<GameEntity>? games,
     String? selectedGameId,
     bool? reviewBothSides,
+    bool? useNewClassifier,
     int? revision,
   }) {
     return AppUiState(
@@ -157,6 +208,7 @@ class AppUiState {
       games: games ?? this.games,
       selectedGameId: selectedGameId ?? this.selectedGameId,
       reviewBothSides: reviewBothSides ?? this.reviewBothSides,
+      useNewClassifier: useNewClassifier ?? this.useNewClassifier,
       revision: revision ?? (this.revision + 1),
     );
   }
@@ -183,6 +235,10 @@ class AppUiNotifier extends StateNotifier<AppUiState> {
             classificationPresetId:
                 services.storage.getSetting('classification_preset_id') ??
                     'lichess',
+            useNewClassifier:
+                services.storage.getSetting('use_new_classifier') != null
+                    ? services.storage.getSetting('use_new_classifier') == 'true'
+                    : services.pipeline.defaultUseNewClassifier,
             themeMode: ThemeMode.system,
             games: services.storage.listGames(),
             selectedGameId: services.storage.listGames().firstOrNull?.id,
@@ -245,6 +301,11 @@ class AppUiNotifier extends StateNotifier<AppUiState> {
 
   void setReviewBothSides(bool both) {
     state = state.copyWith(reviewBothSides: both);
+  }
+
+  void setUseNewClassifier(bool enabled) {
+    services.storage.setSetting('use_new_classifier', enabled.toString());
+    state = state.copyWith(useNewClassifier: enabled);
   }
 
   void selectGame(String gameId) {

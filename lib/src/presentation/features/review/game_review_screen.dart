@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../application/app_state.dart';
 import '../../../application/copy_deck.dart';
+import '../../../application/export_service.dart';
 import '../../../domain/chess/chess_models.dart';
 import '../../../domain/coach/coach_contracts.dart';
 import '../../widgets/chess_board_widget.dart';
+import '../../widgets/engine_warning_banner.dart';
 
 /// Screen 8 & 9: Game Review & Game Summary (matching Part 28.3 Wireframe + Stories F-1, F-2, E-7, I-7).
 class GameReviewScreen extends ConsumerStatefulWidget {
@@ -59,6 +61,10 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
     final myAcc = summary == null
         ? null
         : (game.myColor == SideColor.w ? summary.accWhite : summary.accBlack);
+    final isUnreliableReview = summary != null &&
+        ExportService.isUnreliableEngineVersion(summary.engineVersion);
+    final isEngineUnavailable =
+        summary == null && services.engine.isFallbackEngine;
 
     return ListView(
       padding: const EdgeInsets.all(12),
@@ -83,15 +89,32 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
         ),
         if (myAcc != null) ...[
           const SizedBox(height: 4),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Chip(
-              visualDensity: VisualDensity.compact,
-              label: Text(
-                'Accuracy ${myAcc.toStringAsFixed(0)}%',
-                style: const TextStyle(fontWeight: FontWeight.bold),
+          Wrap(
+            spacing: 6,
+            runSpacing: 4,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Chip(
+                visualDensity: VisualDensity.compact,
+                label: Text(
+                  'Accuracy ${myAcc.toStringAsFixed(0)}%',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
+              if (isUnreliableReview)
+                Chip(
+                  visualDensity: VisualDensity.compact,
+                  avatar: Icon(
+                    Icons.warning_amber_rounded,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  label: const Text(
+                    'Fallback engine',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ),
+            ],
           ),
         ],
         const SizedBox(height: 8),
@@ -350,6 +373,22 @@ class _GameReviewScreenState extends ConsumerState<GameReviewScreen> {
             ),
           ),
         ),
+        if (isUnreliableReview || isEngineUnavailable) ...[
+          const SizedBox(height: 6),
+          EngineWarningBanner(
+            key: const Key('unreliable_engine_banner'),
+            title: CopyDeck.tr(
+              isUnreliableReview
+                  ? 'engine.unreliable_analysis_title'
+                  : 'engine.unavailable_title',
+            ),
+            message: CopyDeck.tr(
+              isUnreliableReview
+                  ? 'engine.unreliable_analysis_body'
+                  : 'engine.unavailable_body',
+            ),
+          ),
+        ],
         const SizedBox(height: 8),
         // Horizontal Move List with Badges
         SingleChildScrollView(

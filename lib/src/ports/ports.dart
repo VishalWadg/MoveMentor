@@ -94,6 +94,8 @@ abstract class EngineService {
   String get engineVersion;
   bool get isThermalThrottled;
   Future<void> init();
+  Future<bool> checkHealth();
+  bool get isFallbackEngine;
   Future<EngineEvalEntity> evaluatePosition(
     String fen,
     EnginePresetConfig preset, {

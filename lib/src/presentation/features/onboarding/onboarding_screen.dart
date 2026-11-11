@@ -146,9 +146,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }) {
     return RadioListTile<String>(
       value: id,
+      // ignore: deprecated_member_use
       groupValue: _selectedProviderId,
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
       subtitle: Text(subtitle),
+      // ignore: deprecated_member_use
       onChanged: (val) {
         if (val != null) setState(() => _selectedProviderId = val);
       },
