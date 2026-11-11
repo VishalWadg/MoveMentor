@@ -1,0 +1,2 @@
+# Enforce LF line endings for cross-platform CI shell scripts
+*.sh text eol=lf

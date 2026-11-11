@@ -44,4 +44,7 @@ migrate_working_dir/
 engine_tools/
 temp_sf/
 tool/cache/
+android/app/src/main/cpp/stockfish/
+assets/nnue/*.nnue
+
 

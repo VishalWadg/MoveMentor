@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../adapters/engine/android_nnue_asset_loader.dart';
 import '../adapters/engine/stockfish_engine_adapter.dart';
 import '../adapters/network/network_gateway_adapter.dart';
 import '../adapters/providers/llama_and_remote_providers.dart';
@@ -74,6 +75,8 @@ class AppServices {
     final engine = StockfishEngineAdapter(
       customStockfishBinaryPath: resolvedBinaryPath,
       refuseSilentFallback: refuseSilentFallback,
+      androidEvalFileResolver:
+          Platform.isAndroid ? resolveAndroidNnueFilePath : null,
     );
     final registry = ProviderRegistry(
       storage: storage,
@@ -139,7 +142,7 @@ final appServicesProvider = Provider<AppServices>((ref) {
   final services = AppServices.createDefault();
   if (Platform.environment['FLUTTER_TEST'] != 'true') {
     unawaited(services.ensureOpeningsLoaded());
-    if (services.engine.customStockfishBinaryPath != null) {
+    if (services.engine.canAttemptNativeInit) {
       unawaited(services.engine.init());
     }
   }

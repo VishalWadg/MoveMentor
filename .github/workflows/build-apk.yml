@@ -54,11 +54,23 @@ jobs:
       - name: Verify Opening Book Asset via CI Script (Part 27.1)
         run: dart run tool/build_openings_db.dart --verify
 
-      - name: Run static analysis
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+      - name: Run static analysis & pure-Dart core tests
+        run: |
+          flutter analyze --no-fatal-infos --no-fatal-warnings
+          (cd packages/chess_review_core && dart pub get && dart analyze && dart test)
 
       - name: Run unit and contract test suite (Part 30)
         run: flutter test
+
+      - name: Ensure Android NDK/CMake & Prepare Stockfish 19 Sources + NNUE
+        run: |
+          SDK_ROOT="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          SDKMANAGER=$(command -v sdkmanager || find "${SDK_ROOT}/cmdline-tools" -name sdkmanager 2>/dev/null | head -n 1 || true)
+          if [ -n "$SDKMANAGER" ]; then
+            yes | "$SDKMANAGER" --licenses >/dev/null || true
+            "$SDKMANAGER" "cmake;3.22.1" "ndk;28.2.13676358"
+          fi
+          bash tool/prepare_android_stockfish.sh
 
       - name: Configure Android Signing (Optional Secrets or Debug Fallback)
         id: signing
@@ -86,6 +98,23 @@ jobs:
         run: |
           flutter build apk --release --build-name=${{ steps.ver.outputs.version }} --build-number=${{ github.run_number }}
           flutter build apk --release --split-per-abi --build-name=${{ steps.ver.outputs.version }} --build-number=${{ github.run_number }}
+
+      - name: Verify Packaged Stockfish .so, NNUE Asset & 16KB ELF Alignment
+        run: |
+          for abi in arm64-v8a armeabi-v7a x86_64; do
+            apk="build/app/outputs/flutter-apk/app-${abi}-release.apk"
+            unzip -l "$apk" | grep -q "lib/${abi}/libmovementor_stockfish.so" || { echo "Missing libmovementor_stockfish.so in $apk"; exit 1; }
+            unzip -l "$apk" | grep -q "assets/flutter_assets/assets/nnue/nn-1a298aa575a0.nnue" || { echo "Missing NNUE asset in $apk"; exit 1; }
+          done
+          mkdir -p /tmp/verify_so
+          unzip -p build/app/outputs/flutter-apk/app-arm64-v8a-release.apk lib/arm64-v8a/libmovementor_stockfish.so > /tmp/verify_so/libmovementor_stockfish.so
+          READELF=$(find "${ANDROID_HOME:-$ANDROID_SDK_ROOT}/ndk" -name llvm-readelf 2>/dev/null | head -n 1 || command -v readelf || true)
+          if [ -n "$READELF" ]; then
+            echo "=== arm64-v8a ELF LOAD segments ==="
+            "$READELF" -lW /tmp/verify_so/libmovementor_stockfish.so | grep LOAD
+            "$READELF" -lW /tmp/verify_so/libmovementor_stockfish.so | grep -q "0x4000" || { echo "Expected 16KB (0x4000) LOAD alignment"; exit 1; }
+          fi
+          rm -rf /tmp/verify_so
 
       - name: Prepare Release Assets & SHA-256 Checksums
         run: |

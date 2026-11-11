@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 import 'package:chess/chess.dart' as ch;
@@ -8,6 +7,10 @@ import '../../domain/chess/chess_models.dart';
 import '../../domain/chess/see_evaluator.dart';
 import '../../domain/coach/coach_contracts.dart';
 import '../../ports/ports.dart';
+import 'ffi_uci_transport.dart';
+import 'uci_transport.dart';
+
+export 'uci_transport.dart' show ProcessStarter, UciEngineTransport;
 
 /// Exception thrown when a queued or active engine search is cancelled.
 class EngineCancelledException implements Exception {
@@ -17,11 +20,6 @@ class EngineCancelledException implements Exception {
   @override
   String toString() => 'EngineCancelledException: $message';
 }
-
-typedef ProcessStarter = Future<Process> Function(
-  String executable,
-  List<String> arguments,
-);
 
 /// Native UCI Stockfish Engine Adapter implementing both the legacy app [EngineService]
 /// port and the pure-Dart [core.EngineServicePort].
@@ -42,11 +40,11 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
   final Duration commandTimeout;
   final Duration searchTimeout;
   final ProcessStarter _processStarter;
+  final FfiTransportStarter? _ffiTransportStarter;
+  final Future<String?> Function()? _androidEvalFileResolver;
 
-  Process? _uciProcess;
-  StreamController<String>? _stdoutBroadcast;
-  StreamSubscription<String>? _stdoutSub;
-  StreamSubscription<String>? _stderrSub;
+  UciEngineTransport? _transport;
+  Future<void>? _initInFlight;
 
   bool _thermalThrottled = false;
   bool _isHealthy = false;
@@ -69,7 +67,20 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
     this.commandTimeout = const Duration(seconds: 5),
     this.searchTimeout = const Duration(seconds: 45),
     ProcessStarter? processStarter,
-  }) : _processStarter = processStarter ?? Process.start;
+    FfiTransportStarter? ffiTransportStarter,
+    Future<String?> Function()? androidEvalFileResolver,
+  })  : _processStarter = processStarter ?? Process.start,
+        _ffiTransportStarter = ffiTransportStarter,
+        _androidEvalFileResolver = androidEvalFileResolver;
+
+  /// Whether a native binary or Android FFI transport can be attempted on this host.
+  bool get canAttemptNativeInit {
+    final bin = customStockfishBinaryPath;
+    if (bin != null && bin.isNotEmpty) return true;
+    if (_ffiTransportStarter != null) return true;
+    if (Platform.isAndroid && _androidEvalFileResolver != null) return true;
+    return false;
+  }
 
   /// Searches environment (`STOCKFISH_PATH`) and standard local install paths
   /// for a native Stockfish executable on desktop platforms.
@@ -129,89 +140,126 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
   }
 
   @override
-  Future<void> init() async {
+  Future<void> init() {
     if (_disposed) {
       throw StateError('StockfishEngineAdapter has already been disposed');
     }
-    if (_uciProcess != null && _isHealthy) {
-      return;
+    if (_transport != null && _isHealthy) {
+      return Future<void>.value();
     }
-
-    final binPath = customStockfishBinaryPath;
-    if (binPath == null || binPath.isEmpty || !File(binPath).existsSync()) {
-      _isHealthy = false;
-      return;
+    if (_initInFlight != null) {
+      return _initInFlight!;
     }
+    final future = _doInit();
+    _initInFlight = future;
+    return future.whenComplete(() {
+      if (identical(_initInFlight, future)) {
+        _initInFlight = null;
+      }
+    });
+  }
 
+  Future<void> _doInit() async {
     try {
-      final proc = await _processStarter(binPath, const []);
-      _attachProcess(proc);
+      String? resolvedEvalFile;
+      final UciEngineTransport transport;
+
+      final binPath = customStockfishBinaryPath;
+      if (binPath != null && binPath.isNotEmpty) {
+        if (!File(binPath).existsSync()) {
+          _isHealthy = false;
+          return;
+        }
+        final proc = await _processStarter(binPath, const []);
+        transport = ProcessUciTransport(proc);
+      } else if (_ffiTransportStarter != null || Platform.isAndroid) {
+        final resolver = _androidEvalFileResolver;
+        if (resolver == null) {
+          _isHealthy = false;
+          return;
+        }
+        resolvedEvalFile = await resolver();
+        if (resolvedEvalFile == null ||
+            resolvedEvalFile.isEmpty ||
+            !File(resolvedEvalFile).existsSync()) {
+          _isHealthy = false;
+          return;
+        }
+        final evalDir = File(resolvedEvalFile).parent.path;
+        final ffiStarter = _ffiTransportStarter;
+        transport = ffiStarter != null
+            ? await ffiStarter(evalDir: evalDir)
+            : await FfiUciTransport.start(evalDir: evalDir);
+      } else {
+        _isHealthy = false;
+        return;
+      }
+
+      _attachTransport(transport);
       final ok = await _performUciHandshake();
       if (!ok) {
-        await _teardownProcess();
+        await _teardownTransport();
         _isHealthy = false;
+        return;
+      }
+
+      if (resolvedEvalFile != null) {
+        final evalReady = await _configureEvalFileAndVerify(resolvedEvalFile);
+        if (!evalReady) {
+          await _teardownTransport();
+          _isHealthy = false;
+          return;
+        }
+        _evalFile = resolvedEvalFile.split(RegExp(r'[/\\]')).last;
       }
     } catch (_) {
-      await _teardownProcess();
+      await _teardownTransport();
       _isHealthy = false;
     }
   }
 
-  void _attachProcess(Process proc) {
-    _uciProcess = proc;
+  void _attachTransport(UciEngineTransport transport) {
+    _transport = transport;
     _lastThreads = null;
     _lastHashMb = null;
     _lastMultiPv = null;
 
-    final broadcast = StreamController<String>.broadcast();
-    _stdoutBroadcast = broadcast;
-
-    _stdoutSub = proc.stdout
-        .transform(utf8.decoder)
-        .transform(const LineSplitter())
-        .listen(
-      (line) {
-        if (!broadcast.isClosed) {
-          broadcast.add(line);
-        }
-      },
-      onError: (Object err) {
-        _handleProcessFailure('Stockfish stdout stream error: $err');
-      },
-      onDone: () {
-        if (!broadcast.isClosed) {
-          broadcast.close();
-        }
-      },
-    );
-
-    _stderrSub = proc.stderr
-        .transform(utf8.decoder)
-        .transform(const LineSplitter())
-        .listen((_) {}, onError: (_) {});
-
-    proc.exitCode.then((code) {
-      if (_uciProcess == proc && !_disposed) {
-        _handleProcessFailure(
-          'Stockfish process exited unexpectedly with exit code $code',
+    transport.onExit.then((code) {
+      if (identical(_transport, transport) && !_disposed) {
+        _handleTransportFailure(
+          'Stockfish transport exited unexpectedly with exit code $code',
         );
       }
     });
   }
 
-  void _handleProcessFailure(String reason) {
+  void _handleTransportFailure(String reason) {
     _isHealthy = false;
-    if (_uciProcess != null) {
-      _uciProcess = null;
+    if (_transport != null) {
+      _transport = null;
     }
     _abortPendingWaiter?.call(reason);
   }
 
+  Future<bool> _configureEvalFileAndVerify(String evalFilePath) {
+    return _enqueue<bool>(() async {
+      final transport = _transport;
+      if (_disposed || !_isHealthy || transport == null) {
+        return false;
+      }
+      transport.sendLine('setoption name EvalFile value $evalFilePath');
+      await transport.flush();
+      return await _sendIsReadyLocked(
+        transport,
+        timeout: const Duration(seconds: 12),
+      );
+    });
+  }
+
   Future<bool> _performUciHandshake() {
     return _enqueue<bool>(() async {
-      final proc = _uciProcess;
-      final stream = _stdoutBroadcast?.stream;
-      if (proc == null || stream == null) {
+      final transport = _transport;
+      if (transport == null) {
         _isHealthy = false;
         return false;
       }
@@ -224,7 +272,7 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
         }
       };
 
-      sub = stream.listen((raw) {
+      sub = transport.lines.listen((raw) {
         final line = raw.trim();
         if (line.startsWith('id name ')) {
           _idName = line.substring('id name '.length).trim();
@@ -240,8 +288,8 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
       });
 
       try {
-        proc.stdin.writeln('uci');
-        await proc.stdin.flush();
+        transport.sendLine('uci');
+        await transport.flush();
         final result = await completer.future.timeout(
           commandTimeout,
           onTimeout: () => false,
@@ -260,19 +308,18 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
 
   @override
   Future<bool> checkHealth() async {
-    if (_disposed || _uciProcess == null || _stdoutBroadcast == null) {
+    if (_disposed || _transport == null) {
       _isHealthy = false;
       return false;
     }
     try {
       return await _enqueue<bool>(() async {
-        final proc = _uciProcess;
-        final stream = _stdoutBroadcast?.stream;
-        if (_disposed || proc == null || stream == null) {
+        final transport = _transport;
+        if (_disposed || transport == null) {
           _isHealthy = false;
           return false;
         }
-        final ok = await _sendIsReadyLocked(proc, stream);
+        final ok = await _sendIsReadyLocked(transport);
         _isHealthy = ok;
         return ok;
       });
@@ -287,7 +334,7 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
     if (_disposed) {
       throw StateError('StockfishEngineAdapter is disposed');
     }
-    if (!_isHealthy || _uciProcess == null) {
+    if (!_isHealthy || _transport == null) {
       if (refuseSilentFallback) {
         throw StateError('Stockfish engine is not healthy; cannot start newGame.');
       }
@@ -295,14 +342,13 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
     }
 
     await _enqueue<void>(() async {
-      final proc = _uciProcess;
-      final stream = _stdoutBroadcast?.stream;
-      if (_disposed || !_isHealthy || proc == null || stream == null) {
+      final transport = _transport;
+      if (_disposed || !_isHealthy || transport == null) {
         throw StateError('Stockfish engine became unavailable during newGame.');
       }
-      proc.stdin.writeln('ucinewgame');
-      await proc.stdin.flush();
-      final ready = await _sendIsReadyLocked(proc, stream);
+      transport.sendLine('ucinewgame');
+      await transport.flush();
+      final ready = await _sendIsReadyLocked(transport);
       if (!ready) {
         _isHealthy = false;
         throw StateError('Stockfish failed to respond readyok after ucinewgame.');
@@ -314,10 +360,10 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
   /// from returning stale data while keeping the engine ready for subsequent calls.
   void cancelActiveSearch() {
     _cancelRequested = true;
-    final proc = _uciProcess;
-    if (_hasActiveSearch && proc != null) {
+    final transport = _transport;
+    if (_hasActiveSearch && transport != null) {
       try {
-        proc.stdin.writeln('stop');
+        transport.sendLine('stop');
       } catch (_) {}
     }
   }
@@ -335,7 +381,7 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
     if (cancel?.isCancelled == true) {
       throw const EngineCancelledException();
     }
-    if (!_isHealthy || _uciProcess == null) {
+    if (!_isHealthy || _transport == null) {
       throw StateError(
         'Real Stockfish engine is unavailable (checkHealth=$_isHealthy). '
         'core.EngineServicePort.analyse refuses silent minimax fallback.',
@@ -427,7 +473,7 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
     }
 
     // Native UCI Stockfish execution path when healthy
-    if (_isHealthy && _uciProcess != null) {
+    if (_isHealthy && _transport != null) {
       final effectiveThreads = _thermalThrottled
           ? math.max(1, preset.threads ~/ 2)
           : preset.threads;
@@ -496,30 +542,29 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
       if (cancel?.isCancelled == true) {
         throw const EngineCancelledException();
       }
-      final proc = _uciProcess;
-      final stream = _stdoutBroadcast?.stream;
-      if (!_isHealthy || proc == null || stream == null) {
-        throw StateError('Stockfish process is not healthy');
+      final transport = _transport;
+      if (!_isHealthy || transport == null) {
+        throw StateError('Stockfish transport is not healthy');
       }
 
       _cancelRequested = false;
 
       if (_lastThreads != threads) {
-        proc.stdin.writeln('setoption name Threads value $threads');
+        transport.sendLine('setoption name Threads value $threads');
         _lastThreads = threads;
       }
       if (_lastHashMb != hashMb) {
-        proc.stdin.writeln('setoption name Hash value $hashMb');
+        transport.sendLine('setoption name Hash value $hashMb');
         _lastHashMb = hashMb;
       }
       if (_lastMultiPv != multiPv) {
-        proc.stdin.writeln('setoption name MultiPV value $multiPv');
+        transport.sendLine('setoption name MultiPV value $multiPv');
         _lastMultiPv = multiPv;
       }
-      proc.stdin.writeln('position fen $fen');
-      await proc.stdin.flush();
+      transport.sendLine('position fen $fen');
+      await transport.flush();
 
-      final ready = await _sendIsReadyLocked(proc, stream);
+      final ready = await _sendIsReadyLocked(transport);
       if (!ready) {
         _isHealthy = false;
         throw StateError('Stockfish did not answer readyok before search');
@@ -534,7 +579,7 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
       var stopSent = false;
       Object? failureError;
 
-      final sub = stream.listen((raw) {
+      final sub = transport.lines.listen((raw) {
         final line = raw.trim();
         if (line.startsWith('info ') &&
             line.contains(' score ') &&
@@ -553,11 +598,11 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
       });
 
       void triggerStop() {
-        if (!stopSent && !_disposed && _uciProcess == proc) {
+        if (!stopSent && !_disposed && identical(_transport, transport)) {
           stopSent = true;
           _cancelRequested = true;
           try {
-            proc.stdin.writeln('stop');
+            transport.sendLine('stop');
           } catch (_) {}
         }
       }
@@ -572,8 +617,8 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
 
       _hasActiveSearch = true;
       try {
-        proc.stdin.writeln(goCommand);
-        await proc.stdin.flush();
+        transport.sendLine(goCommand);
+        await transport.flush();
 
         await bestmoveCompleter.future.timeout(searchTimeout);
       } on TimeoutException {
@@ -603,22 +648,25 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
     });
   }
 
-  Future<bool> _sendIsReadyLocked(Process proc, Stream<String> stream) async {
+  Future<bool> _sendIsReadyLocked(
+    UciEngineTransport transport, {
+    Duration? timeout,
+  }) async {
     final completer = Completer<bool>();
     final prevAbort = _abortPendingWaiter;
     _abortPendingWaiter = (reason) {
       if (!completer.isCompleted) completer.complete(false);
     };
-    final sub = stream.listen((line) {
+    final sub = transport.lines.listen((line) {
       if (line.trim() == 'readyok' && !completer.isCompleted) {
         completer.complete(true);
       }
     });
     try {
-      proc.stdin.writeln('isready');
-      await proc.stdin.flush();
+      transport.sendLine('isready');
+      await transport.flush();
       return await completer.future.timeout(
-        commandTimeout,
+        timeout ?? commandTimeout,
         onTimeout: () => false,
       );
     } catch (_) {
@@ -847,35 +895,21 @@ class StockfishEngineAdapter implements EngineService, core.EngineServicePort {
     return game.turn == ch.Color.WHITE ? diff : -diff;
   }
 
-  Future<void> _teardownProcess() async {
-    final proc = _uciProcess;
-    _uciProcess = null;
+  Future<void> _teardownTransport() async {
+    final transport = _transport;
+    _transport = null;
     _isHealthy = false;
-    _abortPendingWaiter?.call('Stockfish process torn down');
-    if (proc != null) {
-      try {
-        proc.stdin.writeln('quit');
-        await proc.stdin.flush().timeout(const Duration(milliseconds: 200));
-      } catch (_) {}
-      try {
-        proc.kill();
-      } catch (_) {}
+    _abortPendingWaiter?.call('Stockfish transport torn down');
+    if (transport != null) {
+      await transport.close();
     }
-    await _stdoutSub?.cancel();
-    _stdoutSub = null;
-    await _stderrSub?.cancel();
-    _stderrSub = null;
-    if (_stdoutBroadcast != null && !_stdoutBroadcast!.isClosed) {
-      await _stdoutBroadcast!.close();
-    }
-    _stdoutBroadcast = null;
   }
 
   @override
   Future<void> dispose() async {
     if (_disposed) return;
     _disposed = true;
-    await _teardownProcess();
+    await _teardownTransport();
   }
 }
 

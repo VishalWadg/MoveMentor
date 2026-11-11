@@ -1,0 +1,2 @@
+Placeholder file so Flutter test/clean builds locate assets/nnue/.
+Real Android builds populate nn-1a298aa575a0.nnue via tool/prepare_android_stockfish.sh.

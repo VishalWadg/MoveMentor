@@ -565,8 +565,7 @@ abstract final class GameReviewRunner {
     if (engine is StockfishEngineAdapter &&
         !engine.isHealthy &&
         !engine.isDisposed &&
-        engine.customStockfishBinaryPath != null &&
-        engine.customStockfishBinaryPath!.isNotEmpty) {
+        engine.canAttemptNativeInit) {
       await engine.init();
     }
   }
